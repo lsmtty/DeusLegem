@@ -1,4 +1,4 @@
-package com.example.deuslegem.sprite.cards.servants;
+package com.example.deuslegem.sprite.cards.sprite;
 
 import org.cocos2d.nodes.CCSprite;
 import org.cocos2d.types.CGPoint;
