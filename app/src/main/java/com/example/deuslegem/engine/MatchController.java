@@ -1,8 +1,5 @@
 package com.example.deuslegem.engine;
 
-import com.example.deuslegem.sprite.cards.sprite.Card;
-import com.example.deuslegem.sprite.cards.sprite.Servant;
-
 import org.cocos2d.layers.CCTMXObjectGroup;
 
 import java.util.List;
