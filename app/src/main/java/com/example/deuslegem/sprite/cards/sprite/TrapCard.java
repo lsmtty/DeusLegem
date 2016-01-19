@@ -8,9 +8,9 @@ import org.cocos2d.types.CGPoint;
  */
 public abstract  class TrapCard extends  Card
 {
-    public TrapCard(int cost, String url, String name, boolean user)
+    public TrapCard(int id ,int cost, String url, String name, boolean user)
     {
-        super(cost,url,name,user);
+        super(id,cost,url,name,user);
     }
 
     /**

@@ -8,9 +8,9 @@ import org.cocos2d.types.CGPoint;
  */
 public abstract  class ServantCard extends  Card
 {
-    public ServantCard(int cost, String url, String name, boolean user)
+    public ServantCard(int id,int cost, String url, String name, boolean user)
     {
-        super(cost,url,name,user);
+        super(id,cost,url,name,user);
     }
 
     /**

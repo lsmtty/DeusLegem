@@ -11,6 +11,7 @@ public class PlayLayer extends  BaseLayer
     private CCTMXTiledMap map;
     public PlayLayer()
     {
+        setIsTouchEnabled(true);
         init();
     }
 

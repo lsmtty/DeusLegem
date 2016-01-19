@@ -9,9 +9,9 @@ import org.cocos2d.types.CGPoint;
  */
 public abstract  class SpellCard extends Card
 {
-    public SpellCard(int cost, String url, String name, boolean user)
+    public SpellCard(int id,int cost, String url, String name, boolean user)
     {
-        super(cost,url,name,user);
+        super(id,cost,url,name,user);
     }
     //使用魔法卡牌
     public abstract void takeSpell(CGPoint [] target);

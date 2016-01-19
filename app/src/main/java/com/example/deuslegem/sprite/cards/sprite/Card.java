@@ -9,6 +9,7 @@ import org.cocos2d.types.CGPoint;
  */
 public abstract  class Card extends CCSprite
 {
+    private int id;
     private int cost;     //卡牌花费
     private String url;   //贴图地址
     private String name;  //卡牌名称
@@ -21,8 +22,9 @@ public abstract  class Card extends CCSprite
     public abstract void play(CCSprite [] target);   // 打出时触发的事件
     public abstract void discard(); // 丢弃时触发的事件
 
-    public Card(int cost, String url, String name, boolean user) {
+    public Card(int id ,int cost, String url, String name, boolean user) {
         super(url);
+        this.id = id;
         this.url = url;
         this.cost = cost;
         this.name = name;
