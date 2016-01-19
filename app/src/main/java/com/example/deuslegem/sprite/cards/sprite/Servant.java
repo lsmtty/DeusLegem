@@ -1,4 +1,4 @@
-package com.example.deuslegem.sprite.cards.servants;
+package com.example.deuslegem.sprite.cards.sprite;
 
 import org.cocos2d.nodes.CCSprite;
 import org.cocos2d.types.CGPoint;
@@ -8,7 +8,8 @@ import org.cocos2d.types.CGPoint;
  */
 public abstract class Servant extends CCSprite{
     //Max指的是正常状态（未叠加当前回合增/减益Buff的属性值） current(当前回合叠加增/减益Buff的属性值)
-    private  String name;         //名字
+    private int id;
+    private String name;         //名字
     private CGPoint standPoint;   //地图位置
     private int lifePointMax;     //最大血量
     private int lifePointCurrent; //当前血量
@@ -23,10 +24,11 @@ public abstract class Servant extends CCSprite{
     private int remainAttackTimes;//剩余攻击次数
     private boolean user;         //属于的玩家  true or false
 
-    public Servant(String url,String name,CGPoint standPoint, int lifePointMax, int movePointMax,int attackPoint,
+    public Servant(int id ,String url,String name,CGPoint standPoint, int lifePointMax, int movePointMax,int attackPoint,
                    int attackDistance,int attackTimes,boolean user)
     {
         super(url);
+        this.id = id;
         this.name = name;
         this.standPoint = standPoint;
         this.lifePointMax = this.lifePointCurrent = lifePointMax;
@@ -169,7 +171,8 @@ public abstract class Servant extends CCSprite{
      */
     private void attack(CCSprite target)
     {
-        while(remainAttackTimes > 0 && this.getAttackCurrent()> 0)
+        //当前攻击次数大于0 且攻击力大于0
+        if(remainAttackTimes > 0 && this.getAttackCurrent()> 0)
         {
             attackTrigger();
             attackAnimate();
