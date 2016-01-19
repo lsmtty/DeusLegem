@@ -1,4 +1,4 @@
-package com.example.deuslegem.sprite.cards.sprite;
+package com.example.deuslegem.sprite.traps;
 
 import org.cocos2d.nodes.CCSprite;
 import org.cocos2d.types.CGPoint;

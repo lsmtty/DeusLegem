@@ -1,7 +1,7 @@
 package com.example.deuslegem.utils;
 
 import com.example.deuslegem.sprite.cards.sprite.Card;
-import com.example.deuslegem.sprite.cards.sprite.Servant;
+import com.example.deuslegem.sprite.servants.Servant;
 
 import org.cocos2d.actions.base.CCAction;
 import org.cocos2d.actions.base.CCRepeatForever;
