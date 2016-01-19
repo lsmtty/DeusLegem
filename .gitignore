@@ -1,5 +1,6 @@
 .DS_Store
 .gradle
+.idea/workspace.xml
 .idea/gradle.xml
 .idea/misc.xml
 .idea/vcs.xml
