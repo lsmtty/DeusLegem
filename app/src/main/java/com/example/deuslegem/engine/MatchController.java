@@ -64,10 +64,12 @@ public class MatchController
      */
     private void addServant(Integer id)
     {
+
         if(myServants!=null)
         {
             myServants.add(id);
         }
+
     }
 
     //失败
