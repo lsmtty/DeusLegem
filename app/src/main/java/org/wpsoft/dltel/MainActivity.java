@@ -1,18 +1,13 @@
-package com.example.deuslegem;
+package org.wpsoft.dltel;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Window;
-
 import com.example.deuslegem.layer.PlayLayer;
-
 import org.cocos2d.layers.CCScene;
 import org.cocos2d.nodes.CCDirector;
-import org.cocos2d.nodes.CCSprite;
 import org.cocos2d.opengl.CCGLSurfaceView;
 
 public class MainActivity extends AppCompatActivity {
-
     private CCDirector ccDirector;
 
     @Override
