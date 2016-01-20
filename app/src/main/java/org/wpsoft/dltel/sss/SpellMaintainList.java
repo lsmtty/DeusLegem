@@ -1,7 +1,9 @@
 package org.wpsoft.dltel.sss;
 
 /**
- * Created by winup on 2016/1/20.
+ * SpellSkillSystem - 持久技能循环列
+ * Created by WinUP on 2016/1/20.
  */
-public class SpellMaintainList {
+public final class SpellMaintainList {
+
 }
