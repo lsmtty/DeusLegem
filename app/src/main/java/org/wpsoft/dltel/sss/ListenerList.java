@@ -46,6 +46,7 @@ public final class ListenerList {
         if (removeList.size() > 0) {
             for (Listener e : removeList) listenerList.remove(e);
             removeList.clear();
+
         }
     }
 
