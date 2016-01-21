@@ -3,6 +3,7 @@ package org.wpsoft.dltel.system;
 import org.wpsoft.dltel.sss.Listener;
 import org.wpsoft.dltel.sss.ListenerList;
 
+import java.util.Collections;
 import java.util.LinkedList;
 
 /**
@@ -29,10 +30,9 @@ public final class Skill {
     public static Skill getSkill(Listener[] listeners, Card card) {
         Skill target = new Skill();
         target.card = card;
-        for (Listener e : listeners) {
-            target.listener.add(e);
+        for (Listener e : listeners)
             ListenerList.add(e);
-        }
+        Collections.addAll(target.listener, listeners);
         return target;
     }
 
