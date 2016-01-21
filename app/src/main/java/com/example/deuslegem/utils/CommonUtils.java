@@ -1,8 +1,5 @@
 package com.example.deuslegem.utils;
 
-import com.example.deuslegem.sprite.cards.sprite.Card;
-import com.example.deuslegem.sprite.servants.Servant;
-
 import org.cocos2d.actions.base.CCAction;
 import org.cocos2d.actions.base.CCRepeatForever;
 import org.cocos2d.actions.interval.CCAnimate;
@@ -88,26 +85,5 @@ public class CommonUtils
             points.add(cgPoint);
         }
         return  points;
-    }
-
-
-    /**
-     * 创建卡牌精灵
-     * @param id
-     * @return
-     */
-    public static Card createCardById(int id)
-    {
-        return  null;
-    }
-
-    /**
-     * 创建从者精灵
-     * @param id
-     * @return
-     */
-    public static Servant createServantById(int id)
-    {
-        return  null;
     }
 }

@@ -16,7 +16,7 @@ public final class ListenerList {
      *
      * @param target 要添加的消息监听器
      */
-    public static void add(Listener target) {
+    public synchronized static void add(Listener target) {
         if (!listenerList.contains(target)) addList.add(target);
     }
 
@@ -25,7 +25,7 @@ public final class ListenerList {
      *
      * @param target 要删除的消息监听器
      */
-    public static void remove(Listener target) {
+    public synchronized static void remove(Listener target) {
         if (listenerList.contains(target)) removeList.add(target);
     }
 
