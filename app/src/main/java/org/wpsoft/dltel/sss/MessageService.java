@@ -35,9 +35,9 @@ public final class MessageService extends Thread {
      * @param message 消息正文
      * @param type    消息类型
      */
-    public void sendMessage(String message, MessageType type) {
+    public void sendMessage(String message, int type) {
         Message target = handler.obtainMessage();
-        target.what = type.ordinal();
+        target.what = type;
         target.obj = message;
         handler.sendMessage(target);
     }
@@ -64,11 +64,9 @@ public final class MessageService extends Thread {
 
         @Override
         public void handleMessage(Message msg) {
-            MessageType type = MessageType.values()[msg.what];
-            System.out.println(msg.obj);
             ListenerList.updateRemoving();
             ListenerList.updateAdding();
-            ListenerList.broadcastMessage((String) msg.obj, type);
+            ListenerList.broadcastMessage((String) msg.obj, msg.what);
         }
     }
 }

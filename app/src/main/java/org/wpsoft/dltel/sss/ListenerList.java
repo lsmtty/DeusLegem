@@ -7,9 +7,9 @@ import java.util.LinkedList;
  * Created by WinUP on 2016/1/20.
  */
 public final class ListenerList {
-    private static LinkedList<Listener> listenerList = new LinkedList<>();
-    private static LinkedList<Listener> removeList = new LinkedList<>();
-    private static LinkedList<Listener> addList = new LinkedList<>();
+    private static final LinkedList<Listener> listenerList = new LinkedList<>();
+    private static final LinkedList<Listener> removeList = new LinkedList<>();
+    private static final LinkedList<Listener> addList = new LinkedList<>();
 
     /**
      * 添加一个消息监听器
@@ -33,9 +33,11 @@ public final class ListenerList {
      * 应用所有添加操作
      */
     static void updateAdding() {
-        if (addList.size() > 0) {
-            for (Listener e : addList) listenerList.add(e);
-            addList.clear();
+        synchronized (addList){
+            if (addList.size() > 0) {
+                for (Listener e : addList) listenerList.add(e);
+                addList.clear();
+            }
         }
     }
 
@@ -43,9 +45,11 @@ public final class ListenerList {
      * 应用所有删除操作
      */
     static void updateRemoving() {
-        if (removeList.size() > 0) {
-            for (Listener e : removeList) listenerList.remove(e);
-            removeList.clear();
+        synchronized (removeList){
+            if (removeList.size() > 0) {
+                for (Listener e : removeList) listenerList.remove(e);
+                removeList.clear();
+            }
         }
     }
 
@@ -55,9 +59,9 @@ public final class ListenerList {
      * @param message 要广播的消息
      * @param type    消息类型
      */
-    static void broadcastMessage(String message, MessageType type) {
+    static void broadcastMessage(String message, int type) {
         for (Listener e : listenerList)
-            if (e.getListenerType() == type)
+            if ((e.getListenerType() & type) != 0)
                 e.listen(message);
     }
 
