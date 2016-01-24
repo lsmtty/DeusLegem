@@ -5,13 +5,13 @@ package org.wpsoft.dltel.sss;
  * Created by WinUP on 2016/1/20.
  */
 public abstract class Listener {
-    private MessageType listenerType;
+    private int listenerType;
 
-    public MessageType getListenerType() {
+    public int getListenerType() {
         return listenerType;
     }
 
-    public Listener(MessageType listenerType) {
+    public Listener(int listenerType) {
         this.listenerType = listenerType;
     }
 

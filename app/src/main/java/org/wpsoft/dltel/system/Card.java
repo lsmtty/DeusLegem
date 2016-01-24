@@ -1,10 +1,7 @@
 package org.wpsoft.dltel.system;
 
 import org.cocos2d.nodes.CCSprite;
-import org.wpsoft.dltel.sss.Listener;
-import org.wpsoft.dltel.sss.ListenerList;
-
-import java.util.LinkedList;
+import org.wpsoft.dltel.sss.Skill;
 
 /**
  * 表示一张卡牌

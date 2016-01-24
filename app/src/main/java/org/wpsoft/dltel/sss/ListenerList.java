@@ -33,9 +33,11 @@ public final class ListenerList {
      * 应用所有添加操作
      */
     static void updateAdding() {
-        if (addList.size() > 0) {
-            for (Listener e : addList) listenerList.add(e);
-            addList.clear();
+        ynchronized (addList){
+            if (addList.size() > 0) {
+                for (Listener e : addList) listenerList.add(e);
+                addList.clear();
+            }
         }
     }
 
@@ -43,10 +45,11 @@ public final class ListenerList {
      * 应用所有删除操作
      */
     static void updateRemoving() {
-        if (removeList.size() > 0) {
-            for (Listener e : removeList) listenerList.remove(e);
-            removeList.clear();
-
+        synchronized (removeList){
+            if (removeList.size() > 0) {
+                for (Listener e : removeList) listenerList.remove(e);
+                removeList.clear();
+            }
         }
     }
 
@@ -54,11 +57,11 @@ public final class ListenerList {
      * 广播消息
      *
      * @param message 要广播的消息
-     * @param type    消息类型
+     * @param type    消息类型int
      */
-    static void broadcastMessage(String message, MessageType type) {
+    static void broadcastMessage(String message,  type) {
         for (Listener e : listenerList)
-            if (e.getListenerType() == type)
+            if ((e.getListenerType() & type) != 0)
                 e.listen(message);
     }
 
