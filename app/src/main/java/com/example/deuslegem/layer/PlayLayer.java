@@ -22,6 +22,9 @@ import java.util.ArrayList;
  */
 public class PlayLayer extends  BaseLayer
 {
+    private int tileNumber = -1;    //地格数
+    private int tileInRow  = -1;     //每行地格数
+    private int tileInCol  = -1;     //每列地格数
     private CCTMXTiledMap map;
     private CCSprite zombie;
     private CGPoint target;
@@ -33,6 +36,7 @@ public class PlayLayer extends  BaseLayer
     private ArrayList<Integer> waterTile;
     private ArrayList<Integer> mountainTile;
     private boolean actionFinsih = true;
+    private int [][] modelMap;      //抽象地图 1land 2.mountain 3water，为寻路算法设计
     public PlayLayer()
     {
         setIsTouchEnabled(true);
@@ -58,14 +62,36 @@ public class PlayLayer extends  BaseLayer
         map.setAnchorPoint(0.5f, 0.5f);
         CGSize size = map.getContentSize();
         map.setPosition(size.getWidth() / 2, size.getHeight() / 2);
+        CGSize mapSize = map.getMapSize();
+        CGSize tileSize = map.getTileSize();
+        tileInRow = (int)(mapSize.getHeight()/tileSize.getHeight());
+        tileInCol = (int)(mapSize.getWidth() / tileSize.getWidth());
+        tileNumber = tileInCol * tileInRow;
+        //tileNumber = (int)((mapSize.getHeight()*mapSize.getWidth())/( tileSize.getHeight()/tileSize.getWidth()));
         CCTMXLayer layer = map.layerNamed("MapTest");
         land = (ArrayList)CommonUtils.getMapPoints(map,"land");
         landTile = (ArrayList) CommonUtils.getTileId(layer, land);
-        water = (ArrayList)CommonUtils.getMapPoints(map,"water");
+        water = (ArrayList)CommonUtils.getMapPoints(map, "water");
         waterTile = (ArrayList) CommonUtils.getTileId(layer, water);
-        mountain = (ArrayList)CommonUtils.getMapPoints(map,"mountain");
+        mountain = (ArrayList)CommonUtils.getMapPoints(map, "mountain");
         mountainTile = (ArrayList) CommonUtils.getTileId(layer, mountain);
 
+        //初始化模型地图
+        modelMap = new int[tileInRow][tileInCol];
+        int temp = 0;
+        for(int i = 0;i < tileInRow;i++)
+        {
+            for(int j = 0;j < tileInCol;j++)
+            {
+                if(landTile.contains(temp))
+                    modelMap[i][j] = 1;  //land节点
+                else if(mountainTile.contains(temp))    //山节点
+                    modelMap[i][j] = 2;
+                else if(waterTile.contains(temp))       //水节点
+                    modelMap[i][j] = 0;
+                temp++;
+            }
+        }
         this.addChild(map);
     }
 
@@ -76,7 +102,7 @@ public class PlayLayer extends  BaseLayer
             target = this.convertPrevTouchToNodeSpace(event); //转换成Cocos2d的坐标显示
             CCTMXLayer layer = map.layerNamed("Tile Layer 2");
             int targetTile = layer.tileGIDAt(target);
-            Log.i("id", "第几个点" + targetTile);
+                        Log.i("id", "第几个点" + targetTile);
             ArrayList<Integer> path = findPath(layer,standTile, targetTile);
             if(path!=null)
             {
