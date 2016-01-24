@@ -5,6 +5,7 @@ import org.cocos2d.actions.base.CCRepeatForever;
 import org.cocos2d.actions.interval.CCAnimate;
 import org.cocos2d.layers.CCLayer;
 import org.cocos2d.layers.CCScene;
+import org.cocos2d.layers.CCTMXLayer;
 import org.cocos2d.layers.CCTMXObjectGroup;
 import org.cocos2d.layers.CCTMXTiledMap;
 import org.cocos2d.nodes.CCAnimation;
@@ -77,6 +78,10 @@ public class CommonUtils
         List<CGPoint> points = new ArrayList<>();
         //解析地图
         CCTMXObjectGroup objectGroup = map.objectGroupNamed(name);
+        //找到图层中某点id的方法
+        /*CCTMXLayer layer1 = map.layerNamed("layer01");
+        CGPoint first =  CCNode.ccp(10, 10);
+        layer1.tileGIDAt(first);*/
         ArrayList<HashMap<String,String>> objects = objectGroup.objects;
         for (HashMap<String,String> i:objects) {
             int x = Integer.parseInt(i.get("x"));
@@ -86,4 +91,21 @@ public class CommonUtils
         }
         return  points;
     }
+
+    /**
+     * 获取图层中对应图块的id列表
+     * @param layer     图层
+     * @param points    目标点
+     * @return
+     */
+    public  static List<Integer> getTileId(CCTMXLayer layer,ArrayList<CGPoint> points)
+    {
+        ArrayList<Integer> tiles = new ArrayList<>();
+        for (CGPoint i:points)
+        {
+            tiles.add(layer.tileGIDAt(i));
+        }
+        return  tiles;
+    }
+
 }
