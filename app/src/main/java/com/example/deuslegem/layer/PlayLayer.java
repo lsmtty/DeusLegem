@@ -58,14 +58,17 @@ public class PlayLayer extends  BaseLayer
     }
 
     private void loadMap() {
+        //getContentSize 获取地图像素为单位的宽和高
+        //getMapSize 获取地图的宽和高上的图块数量****易混淆
+        //getTileSize 获取图块以像素为单位的宽和高
         map = CCTMXTiledMap.tiledMap("image/TestMap.tmx");
         map.setAnchorPoint(0.5f, 0.5f);
         CGSize size = map.getContentSize();
         map.setPosition(size.getWidth() / 2, size.getHeight() / 2);
+        this.addChild(map);
         CGSize mapSize = map.getMapSize();
-        CGSize tileSize = map.getTileSize();
-        tileInRow = (int)(mapSize.getHeight()/tileSize.getHeight());
-        tileInCol = (int)(mapSize.getWidth() / tileSize.getWidth());
+        tileInRow = (int)mapSize.getHeight();
+        tileInCol = (int)mapSize.getWidth();
         tileNumber = tileInCol * tileInRow;
         //tileNumber = (int)((mapSize.getHeight()*mapSize.getWidth())/( tileSize.getHeight()/tileSize.getWidth()));
         CCTMXLayer layer = map.layerNamed("MapTest");
@@ -92,7 +95,6 @@ public class PlayLayer extends  BaseLayer
                 temp++;
             }
         }
-        this.addChild(map);
     }
 
     @Override

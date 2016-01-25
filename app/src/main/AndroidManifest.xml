@@ -8,11 +8,17 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name="org.wpsoft.dltel.MainActivity" >
+        <activity android:name=".engine.MainActivity"
+            android:launchMode="standard"
+            android:screenOrientation="landscape"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name="org.wpsoft.dltel.SecondActivity"
+            >
         </activity>
     </application>
 

@@ -18,5 +18,8 @@ public abstract class Skill extends Listener {
         this.card = card;
         ListenerList.add(this);
     }
+    public void cancel()
+    {
 
+    }
 }
