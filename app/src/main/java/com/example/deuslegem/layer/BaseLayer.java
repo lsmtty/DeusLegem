@@ -12,8 +12,6 @@ public class BaseLayer extends CCLayer
     protected CGSize winSize;
     public BaseLayer()
     {
-
         this.winSize = CCDirector.sharedDirector().getWinSize();
-
     }
 }

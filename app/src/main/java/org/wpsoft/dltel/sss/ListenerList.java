@@ -7,9 +7,9 @@ import java.util.LinkedList;
  * Created by WinUP on 2016/1/20.
  */
 public final class ListenerList {
-    private static final LinkedList<Listener> listenerList = new LinkedList<>();
-    private static final LinkedList<Listener> removeList = new LinkedList<>();
-    private static final LinkedList<Listener> addList = new LinkedList<>();
+    private static LinkedList<Listener> listenerList = new LinkedList<>();
+    private static LinkedList<Listener> removeList = new LinkedList<>();
+    private static LinkedList<Listener> addList = new LinkedList<>();
 
     /**
      * 添加一个消息监听器
@@ -29,7 +29,7 @@ public final class ListenerList {
         if (listenerList.contains(target)) removeList.add(target);
     }
 
-    /**
+    /**s
      * 应用所有添加操作
      */
     static void updateAdding() {
@@ -55,11 +55,11 @@ public final class ListenerList {
 
     /**
      * 广播消息
-     *
+     *int
      * @param message 要广播的消息
-     * @param type    消息类型
+     * @param type    消息类型int
      */
-    static void broadcastMessage(String message, int type) {
+    static void broadcastMessage(String message,int type) {
         for (Listener e : listenerList)
             if ((e.getListenerType() & type) != 0)
                 e.listen(message);

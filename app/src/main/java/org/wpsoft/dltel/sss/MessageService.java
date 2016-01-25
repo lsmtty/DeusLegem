@@ -9,7 +9,7 @@ import android.os.Handler;
  * Created by WinUP on 2016/1/20.
  */
 public final class MessageService extends Thread {
-    private static MessageService instance;
+    private volatile static MessageService instance;
     private Handler handler;
     private Looper looper;
 
@@ -19,12 +19,18 @@ public final class MessageService extends Thread {
     /**
      * 获得消息服务的唯一实例
      *
-     * @return 消息服务的唯一实例
+     * @return 消息服务的唯一实例,双重校验锁写法
      */
     public static MessageService getInstance() {
         if (instance == null) {
-            instance = new MessageService();
-            instance.start();
+            synchronized (MessageService.class)
+            {
+                if(instance==null)
+                {
+                    instance = new MessageService();
+                    instance.start();
+                }
+            }
         }
         return instance;
     }
