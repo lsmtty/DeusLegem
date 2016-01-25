@@ -13,6 +13,13 @@ public abstract class Skill extends Listener {
         return card;
     }
 
+    @Override
+    public void listen(String message) {
+
+    }
+
+    public abstract void spell();
+
     public Skill(int listenerType, Card card) {
         super(listenerType);
         this.card = card;

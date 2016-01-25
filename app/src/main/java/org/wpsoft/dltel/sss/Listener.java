@@ -15,5 +15,5 @@ public abstract class Listener {
         this.listenerType = listenerType;
     }
 
-    public abstract boolean listen(String message);
+    public abstract void listen(String message);
 }

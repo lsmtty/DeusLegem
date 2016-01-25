@@ -10,8 +10,10 @@ import org.wpsoft.dltel.sss.Skill;
 public abstract class Card extends CCSprite {
     private int id;
     private String imagePath;
-    private Player player;
-    protected Skill skill = null;
+    private Deck deck;
+    private CardState state;
+
+    public abstract CardType getCardType();
 
     /**
      * 使用条件检查前进行的准备工作，例如高亮画面某些区域
@@ -38,18 +40,7 @@ public abstract class Card extends CCSprite {
     /**
      * 使用这张卡牌
      */
-    public abstract void using();
-
-    /**
-     * 销毁这张卡牌
-     */
-    public void destroy() {
-        if (skill != null) skill.cancel();
-        destroyImplement();
-    }
-
-    abstract void destroyImplement();
-
+    public abstract void use();
 
     /**
      * 获取卡牌的ID
@@ -70,24 +61,46 @@ public abstract class Card extends CCSprite {
     }
 
     /**
-     * 获取卡牌所属的玩家
+     * 获取卡牌所在的牌组
      *
-     * @return 卡牌所属的玩家
+     * @return 卡牌所在的牌组
      */
-    public Player getPlayer() {
-        return player;
+    public Deck getDeck() {
+        return deck;
+    }
+
+    /**
+     * 设置卡牌所在的牌组
+     * @param deck 目标牌组
+     */
+    void setDeck(Deck deck){
+        this.deck = deck;
+    }
+
+    /**
+     * 获取卡牌当前的状态
+     * @return 卡牌当前的状态
+     */
+    public CardState getState() {
+        return state;
+    }
+
+    /**
+     * 设置卡牌当前的状态
+     * @param state 目标状态
+     */
+    void setState(CardState state) {
+        this.state = state;
     }
 
     /**
      * 获得一张新的卡牌。卡牌将会被随机分配一个新的UUID
      *
      * @param imagePath 卡牌图像的路径
-     * @param player    卡牌所属的玩家
      */
-    public Card(int id, String imagePath, Player player) {
+    public Card(int id, String imagePath) {
         super(imagePath);
         this.id = id;
         this.imagePath = imagePath;
-        this.player = player;
     }
 }
