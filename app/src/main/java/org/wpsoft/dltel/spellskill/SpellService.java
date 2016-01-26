@@ -1,5 +1,6 @@
-package org.wpsoft.dltel.sss;
+package org.wpsoft.dltel.spellskill;
 
+import java.util.Objects;
 import java.util.Stack;
 
 /**
@@ -18,8 +19,12 @@ public final class SpellService {
         return true;
     }
 
-    public synchronized void spell(Skill target){
+    public synchronized void spell(Skill target, Object... parameter){
         spellList.push(target);
+
+    }
+
+    public synchronized void tryCancelSpell(Skill target){
 
     }
 

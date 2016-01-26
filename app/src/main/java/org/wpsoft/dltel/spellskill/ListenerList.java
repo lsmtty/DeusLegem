@@ -1,4 +1,4 @@
-package org.wpsoft.dltel.sss;
+package org.wpsoft.dltel.spellskill;
 
 import java.util.LinkedList;
 

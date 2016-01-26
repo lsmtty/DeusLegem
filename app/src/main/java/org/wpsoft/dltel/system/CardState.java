@@ -9,6 +9,5 @@ public enum CardState {
     InHand,
     Spelling,
     WaitingSpell,
-    InCemetery,
-    InServantHall
+    InCemetery
 }

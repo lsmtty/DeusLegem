@@ -1,4 +1,4 @@
-package org.wpsoft.dltel.sss;
+package org.wpsoft.dltel.spellskill;
 
 /**
  * 技能发动时间
@@ -30,7 +30,7 @@ public enum SpellTimePoint {
     BeforeServantAttack(2048, true),
     AfterServantAttack(2048, false),
     BeforeServantDied(4096, true),
-    AfterServantDies(4096, false),
+    AfterServantDied(4096, false),
     BeforeBlockOwnerChange(8192, true),
     AfterBlockOwnerChange(8192, false);
 

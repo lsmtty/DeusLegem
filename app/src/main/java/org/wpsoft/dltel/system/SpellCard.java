@@ -1,5 +1,7 @@
 package org.wpsoft.dltel.system;
 
+import org.wpsoft.dltel.Card;
+
 /**
  * 表示一张技能卡
  * Created by WinUP on 2016/1/19.
@@ -7,8 +9,8 @@ package org.wpsoft.dltel.system;
 public abstract class SpellCard extends Card {
     private boolean maintain;
 
-    public SpellCard(int id, String imagePath, Player player, boolean maintain){
-        super(id, imagePath, player);
+    public SpellCard(int id, String imagePath, boolean maintain){
+        super(id, imagePath, CardType.SpellCard);
         this.maintain = maintain;
     }
 

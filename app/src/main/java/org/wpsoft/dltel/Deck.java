@@ -1,8 +1,10 @@
-package org.wpsoft.dltel.system;
+package org.wpsoft.dltel;
 
 import android.support.annotation.Nullable;
-import org.wpsoft.dltel.sss.SpellService;
-import org.wpsoft.dltel.sss.SpellTimePoint;
+import org.wpsoft.dltel.spellskill.SpellService;
+import org.wpsoft.dltel.spellskill.SpellTimePoint;
+import org.wpsoft.dltel.system.CardState;
+import org.wpsoft.dltel.system.Player;
 
 import java.util.LinkedList;
 
@@ -14,15 +16,22 @@ public final class Deck {
     private LinkedList<Card> unused = new LinkedList<>();
     private LinkedList<Card> hand = new LinkedList<>();
     private LinkedList<Card> cemetery = new LinkedList<>();
-    private LinkedList<Card> servantHall = new LinkedList<>();
+    private LinkedList<Servant> servantHall = new LinkedList<>();
     private Player player;
-
     private int count;
 
+    /**
+     * 获取牌组中牌的数量
+     * @return 牌组中牌的数量
+     */
     public int getCount() {
         return count;
     }
 
+    /**
+     * 获取牌组属于的玩家
+     * @return 牌组属于的玩家
+     */
     public Player getPlayer() {
         return player;
     }
@@ -34,9 +43,6 @@ public final class Deck {
                 break;
             case InHand:
                 hand.remove(card);
-                break;
-            case InServantHall:
-                servantHall.remove(card);
                 break;
             case Unused:
                 unused.remove(card);
@@ -60,10 +66,14 @@ public final class Deck {
         return card;
     }
 
-    public Deck(Card[] cards, Player player){
+    public Deck(Card[] cards, Servant[] servants, Player player){
         for (Card card: cards) {
             card.setDeck(this);
             unused.push(card);
+        }
+        for (Servant servant : servants){
+            servant.setPlayer(player);
+            servantHall.push(servant);
         }
         count = cards.length;
         this.player = player;

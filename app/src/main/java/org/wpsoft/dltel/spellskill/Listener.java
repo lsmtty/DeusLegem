@@ -1,4 +1,4 @@
-package org.wpsoft.dltel.sss;
+package org.wpsoft.dltel.spellskill;
 
 /**
  * SpellSkillSystem - 消息监听器

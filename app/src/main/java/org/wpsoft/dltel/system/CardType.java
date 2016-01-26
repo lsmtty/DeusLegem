@@ -5,7 +5,7 @@ package org.wpsoft.dltel.system;
  * Created by WinUP on 2016/1/25.
  */
 public enum CardType {
-    SkillCard,
+    SpellCard,
     SummonCard,
     MapTrapCard,
     TriggerTrapCard
