@@ -1,4 +1,4 @@
-package org.wpsoft.dltel.system;
+package org.wpsoft.dltel.deck;
 
 /**
  * 卡牌状态
@@ -8,6 +8,6 @@ public enum CardState {
     Unused,
     InHand,
     Spelling,
-    WaitingSpell,
-    InCemetery
+    InCemetery,
+    Disappearing
 }

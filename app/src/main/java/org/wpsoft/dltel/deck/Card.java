@@ -1,10 +1,10 @@
-package org.wpsoft.dltel;
+package org.wpsoft.dltel.deck;
 
 import org.cocos2d.nodes.CCSprite;
 import org.wpsoft.dltel.spellskill.Skill;
 import org.wpsoft.dltel.spellskill.SpellService;
-import org.wpsoft.dltel.system.CardState;
-import org.wpsoft.dltel.system.CardType;
+import org.wpsoft.dltel.spellskill.SpellTimePoint;
+
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
@@ -16,7 +16,6 @@ public final class Card extends CCSprite {
     private int id;
     private String imagePath;
     private Deck deck;
-    private CardState state;
     private CardType type;
     private Skill beforeUsingCheckSkill;
     private Skill usingCheckSkill;
@@ -40,7 +39,40 @@ public final class Card extends CCSprite {
      * 使用这张卡牌
      */
     public Card use() {
-        SpellService.getInstance().spell(useSkill);
+        if (!usingCheck(true)) return this;
+        deck.moveCard(this, CardState.Spelling);
+        SpellTimePoint timePoint = SpellTimePoint.Now;
+        switch (type) {
+            case SkillCard:
+                timePoint = SpellTimePoint.BeforeUseSkillCard;
+                break;
+            case SummonCard:
+                timePoint = SpellTimePoint.BeforeUseSummonCard;
+                break;
+            case MapTrapCard:
+                timePoint = SpellTimePoint.BeforeUseMapTrapCard;
+                break;
+            case TriggerTrapCard:
+                timePoint = SpellTimePoint.BeforeUseTriggerTrapCard;
+        }
+        boolean answer = SpellService.getInstance().fireSpellTimePoint(timePoint);
+        if (answer) {
+            SpellService.getInstance().spell(useSkill);
+            switch (type) {
+                case SkillCard:
+                    timePoint = SpellTimePoint.AfterUseSkillCard;
+                    break;
+                case SummonCard:
+                    timePoint = SpellTimePoint.AfterUseSummonCard;
+                    break;
+                case MapTrapCard:
+                    timePoint = SpellTimePoint.AfterUseMapTrapCard;
+                    break;
+                case TriggerTrapCard:
+                    timePoint = SpellTimePoint.AfterUseTriggerTrapCard;
+            }
+            SpellService.getInstance().fireSpellTimePoint(timePoint);
+        }
         return this;
     }
 
@@ -49,7 +81,7 @@ public final class Card extends CCSprite {
      */
     public void destroy() {
         SpellService.getInstance().tryCancelSpell(useSkill);
-        deck.sendToCemetery(this);
+        deck.moveCard(this, CardState.InCemetery);
     }
 
     /**
@@ -84,7 +116,7 @@ public final class Card extends CCSprite {
      *
      * @param deck 目标牌组
      */
-    Card setDeck(Deck deck) {
+    public Card setDeck(Deck deck) {
         this.deck = deck;
         return this;
     }
@@ -95,7 +127,7 @@ public final class Card extends CCSprite {
      * @return 卡牌当前的状态
      */
     public CardState getState() {
-        return state;
+        return deck.getCardState(this);
     }
 
     /**
@@ -103,8 +135,8 @@ public final class Card extends CCSprite {
      *
      * @param state 目标状态
      */
-    Card setState(CardState state) {
-        this.state = state;
+    public Card setState(CardState state) {
+        deck.setCardState(this, state);
         return this;
     }
 

@@ -1,6 +1,6 @@
 package org.wpsoft.dltel.spellskill;
 
-import org.wpsoft.dltel.Card;
+import org.wpsoft.dltel.deck.Card;
 
 import java.io.Serializable;
 

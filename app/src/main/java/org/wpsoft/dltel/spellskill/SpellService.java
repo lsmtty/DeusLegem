@@ -1,6 +1,5 @@
 package org.wpsoft.dltel.spellskill;
 
-import java.util.Objects;
 import java.util.Stack;
 
 /**
@@ -12,27 +11,28 @@ public final class SpellService {
     private static Stack<Skill> spellList = new Stack<>();
 
     public static SpellService getInstance() {
+        if (instance == null) instance = new SpellService();
         return instance;
     }
 
-    public synchronized boolean fireSpellTimePoint(SpellTimePoint timePoint){
+    public synchronized boolean fireSpellTimePoint(SpellTimePoint timePoint) {
         return true;
     }
 
-    public synchronized void spell(Skill target, Object... parameter){
+    public synchronized void spell(Skill target, Object... parameter) {
         spellList.push(target);
 
     }
 
-    public synchronized void tryCancelSpell(Skill target){
+    public synchronized void tryCancelSpell(Skill target) {
 
     }
 
-    private void startSpell(){
+    private void startSpell() {
 
     }
 
-    private void checkSpellList(SpellTimePoint timePoint){
+    private void checkSpellList(SpellTimePoint timePoint) {
 
     }
 

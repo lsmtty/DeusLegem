@@ -1,4 +1,4 @@
-package org.wpsoft.dltel.system;
+package org.wpsoft.dltel.deck;
 
 /**
  * 卡片管理器
