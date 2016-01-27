@@ -3,16 +3,15 @@ package com.example.deuslegem.layer;
 import android.net.LinkAddress;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ListView;
 
 import com.example.deuslegem.utils.CommonUtils;
 
-import org.cocos2d.layers.CCLayer;
 import org.cocos2d.layers.CCTMXLayer;
-import org.cocos2d.layers.CCTMXObjectGroup;
 import org.cocos2d.layers.CCTMXTiledMap;
 import org.cocos2d.nodes.CCSprite;
 import org.cocos2d.types.CGPoint;
-import org.cocos2d.types.CGRect;
 import org.cocos2d.types.CGSize;
 
 import java.util.ArrayList;
@@ -50,11 +49,14 @@ public class PlayLayer extends  BaseLayer
     }
 
     private void loadZombie() {
-        zombie = CCSprite.sprite("z_1_attack_01.png");
+        zombie = CCSprite.sprite("image/z_1_attack_01.png");
         zombie.setFlipX(true);
         zombie.setAnchorPoint(0.5f, 0.5f);
+        Log.i("message",land.get(0).toString());
         zombie.setPosition(land.get(0));
+        zombie.setScale(0.8);
         standTile = 0; //设置起始格子id为0
+        this.addChild(zombie,1);
     }
 
     private void loadMap() {
@@ -65,19 +67,20 @@ public class PlayLayer extends  BaseLayer
         map.setAnchorPoint(0.5f, 0.5f);
         CGSize size = map.getContentSize();
         map.setPosition(size.getWidth() / 2, size.getHeight() / 2);
-        this.addChild(map);
+        map.setVisible(false);
+        this.addChild(map,0);
         CGSize mapSize = map.getMapSize();
         tileInRow = (int)mapSize.getHeight();
         tileInCol = (int)mapSize.getWidth();
         tileNumber = tileInCol * tileInRow;
-        //tileNumber = (int)((mapSize.getHeight()*mapSize.getWidth())/( tileSize.getHeight()/tileSize.getWidth()));
-        CCTMXLayer layer = map.layerNamed("MapTest");
+        /*CCTMXLayer landLayer = map.layerNamed("LandLayer");
+        CCTMXLayer waterLayer = map.layerNamed("WaterLayer");*/
         land = (ArrayList)CommonUtils.getMapPoints(map,"land");
-        landTile = (ArrayList) CommonUtils.getTileId(layer, land);
+        landTile = (ArrayList) CommonUtils.getTileId(map, land);
         water = (ArrayList)CommonUtils.getMapPoints(map, "water");
-        waterTile = (ArrayList) CommonUtils.getTileId(layer, water);
+        waterTile = (ArrayList) CommonUtils.getTileId(map, water);
         mountain = (ArrayList)CommonUtils.getMapPoints(map, "mountain");
-        mountainTile = (ArrayList) CommonUtils.getTileId(layer, mountain);
+        mountainTile = (ArrayList) CommonUtils.getTileId(map, mountain);
 
         //初始化模型地图
         modelMap = new int[tileInRow][tileInCol];
@@ -95,11 +98,12 @@ public class PlayLayer extends  BaseLayer
                 temp++;
             }
         }
+
     }
 
     @Override
     public boolean ccTouchesBegan(MotionEvent event) {
-        if(actionFinsih)
+        /*if(actionFinsih)
         {
             target = this.convertPrevTouchToNodeSpace(event); //转换成Cocos2d的坐标显示
             CCTMXLayer layer = map.layerNamed("Tile Layer 2");
@@ -116,7 +120,7 @@ public class PlayLayer extends  BaseLayer
                 }
             }
             return  true;
-        }
+        }*/
         return super.ccTouchesBegan(event);
     }
 

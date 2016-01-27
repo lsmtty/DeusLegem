@@ -1,5 +1,7 @@
 package com.example.deuslegem.utils;
 
+import android.util.Log;
+
 import org.cocos2d.actions.base.CCAction;
 import org.cocos2d.actions.base.CCRepeatForever;
 import org.cocos2d.actions.interval.CCAnimate;
@@ -15,6 +17,7 @@ import org.cocos2d.nodes.CCSprite;
 import org.cocos2d.nodes.CCSpriteFrame;
 import org.cocos2d.transitions.CCFlipXTransition;
 import org.cocos2d.types.CGPoint;
+import org.cocos2d.types.CGSize;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +36,7 @@ public class CommonUtils
     {
         CCScene scene  = CCScene.node();
         scene.addChild(newLayer);
-        CCFlipXTransition transition = CCFlipXTransition.transition(2,scene,0);
+        CCFlipXTransition transition = CCFlipXTransition.transition(2, scene, 0);
         CCDirector.sharedDirector().replaceScene(transition);
     }
 
@@ -79,9 +82,8 @@ public class CommonUtils
         //解析地图
         CCTMXObjectGroup objectGroup = map.objectGroupNamed(name);
         //找到图层中某点id的方法
-        /*CCTMXLayer layer1 = map.layerNamed("layer01");
-        CGPoint first =  CCNode.ccp(10, 10);
-        layer1.tileGIDAt(first);*/
+        if(objectGroup==null)
+            return points;
         ArrayList<HashMap<String,String>> objects = objectGroup.objects;
         for (HashMap<String,String> i:objects) {
             int x = Integer.parseInt(i.get("x"));
@@ -98,14 +100,46 @@ public class CommonUtils
      * @param points    目标点
      * @return
      */
-    public  static List<Integer> getTileId(CCTMXLayer layer,ArrayList<CGPoint> points)
+    public  static List<Integer> getTileId(CCTMXTiledMap map,ArrayList<CGPoint> points)
     {
         ArrayList<Integer> tiles = new ArrayList<>();
+        if(map==null)
+        {
+            Log.i("message","map is null");
+            return  tiles;
+        }
         for (CGPoint i:points)
         {
-            tiles.add(layer.tileGIDAt(i));
+
+            tiles.add(getTileId(map, i));
         }
         return  tiles;
     }
 
+    /**
+     * 根据点获取图块的id号，从0开始
+     * @param map
+     * @param point
+     * @return
+     */
+    public static Integer getTileId(CCTMXTiledMap map,CGPoint point)
+    {
+        CGSize contentSize = map.getContentSize();
+        if(point.x < 0 || point.x > contentSize.getWidth() || point.y<0 || point.y > contentSize.getHeight())
+        {
+            Log.i("message","point  is illegel");
+            return  -1;
+        }
+        CGSize mapSize = map.getMapSize();
+        CGSize tileSize = map.getTileSize();
+        if(map==null)
+        {
+            Log.i("message","map is null");
+            return  -1;
+        }
+        int row = (int)(point.x+0.5/ tileSize.width);
+        int col = (int)(point.y+0.5/tileSize.getHeight());
+        col = (int)mapSize.getHeight() -1 - col;
+        return  row + col * (int)mapSize.getWidth();
+    }
 }

@@ -19,11 +19,12 @@ public class MainActivity extends AppCompatActivity {
         ccDirector = CCDirector.sharedDirector();
         ccDirector.attachInView(surfaceView);
         ccDirector.setDisplayFPS(true);
-        ccDirector.setScreenSize(480, 320);
+        ccDirector.setScreenSize(512, 256);
         ccDirector.setDeviceOrientation(CCDirector.kCCDeviceOrientationLandscapeLeft);
-        CCScene ccScene = CCScene.node();
-        ccScene.addChild(new PlayLayer());
-        ccDirector.runWithScene(ccScene);
+        CCScene scene = CCScene.node();
+        PlayLayer playLayer = new PlayLayer();
+        scene.addChild(playLayer);
+        ccDirector.runWithScene(scene);
     }
 
     @Override
