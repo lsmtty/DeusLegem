@@ -49,11 +49,11 @@ public final class ExecuteService {
                     case Summon:
                         generateSkillStack(skillStack, ExecuteTimePoint.SummonBefore);
                         break;
-                    case MapTrap:
-                        generateSkillStack(skillStack, ExecuteTimePoint.MapTrapActiveBefore);
+                    case Trap:
+                        generateSkillStack(skillStack, ExecuteTimePoint.TrapActiveBefore);
                         break;
-                    case TriggerTrap:
-                        generateSkillStack(skillStack, ExecuteTimePoint.TriggerTrapActiveBefore);
+                    case InterferenceUnit:
+                        generateSkillStack(skillStack, ExecuteTimePoint.InterferenceUnitActiveBefore);
                         break;
                 }
                 skill = skillStack.pop();
@@ -65,11 +65,11 @@ public final class ExecuteService {
                     case Summon:
                         generateSkillStack(skillStack, ExecuteTimePoint.SummonAfter);
                         break;
-                    case MapTrap:
-                        generateSkillStack(skillStack, ExecuteTimePoint.MapTrapActiveAfter);
+                    case Trap:
+                        generateSkillStack(skillStack, ExecuteTimePoint.TrapActiveAfter);
                         break;
-                    case TriggerTrap:
-                        generateSkillStack(skillStack, ExecuteTimePoint.TriggerTrapActiveAfter);
+                    case InterferenceUnit:
+                        generateSkillStack(skillStack, ExecuteTimePoint.InterferenceUnitActiveAfter);
                         break;
                 }
             }

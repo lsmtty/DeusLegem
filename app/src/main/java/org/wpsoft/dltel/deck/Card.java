@@ -114,10 +114,10 @@ public final class Card extends CCSprite {
         this.id = id;
         this.imagePath = imagePath;
         try {
-            this.beforeUsingCheckSkill = SkillCode.loadSkill(beforeUsingCheckSkillPath, SkillCodeType.Normal, 1);
-            this.usingCheckSkill = SkillCode.loadSkill(afterUsingCheckSkillPath, SkillCodeType.Normal, 1);
-            this.afterUsingCheckSkill = SkillCode.loadSkill(usingCheckSkillPath, SkillCodeType.Normal, 1);
-            this.useSkill = SkillCode.loadSkill(useSkillPath, SkillCodeType.Normal, 1);
+            this.beforeUsingCheckSkill = SkillCode.loadSkillCode(beforeUsingCheckSkillPath, SkillCodeType.Normal, 1);
+            this.usingCheckSkill = SkillCode.loadSkillCode(afterUsingCheckSkillPath, SkillCodeType.Normal, 1);
+            this.afterUsingCheckSkill = SkillCode.loadSkillCode(usingCheckSkillPath, SkillCodeType.Normal, 1);
+            this.useSkill = SkillCode.loadSkillCode(useSkillPath, SkillCodeType.Normal, 1);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

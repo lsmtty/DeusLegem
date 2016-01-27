@@ -10,8 +10,7 @@ import java.io.Serializable;
  * 表示一段能力代码
  * Created by WinUP on 2016/1/20.
  */
-public abstract class SkillCode implements Serializable {
-    private static final long serialVersionUID = 1L;
+public abstract class SkillCode {
     private SkillCodeType type;
     private int spellTimePoint = 0;
 
@@ -42,14 +41,15 @@ public abstract class SkillCode implements Serializable {
     public abstract ExecuteParameter execute(ExecuteParameter parameter);
 
     /**
-     * 从文件读取能力代码
+     * 按名称生成能力代码
      *
-     * @param name 文件名称(assets/skill/下)
-     * @param type 能力代码类型
+     * @param name           能力代码名称（必须位于包org.wpsoft.dltel.skill内）
+     * @param type           能力代码类型
+     * @param spellTimePoint 能力代码触发时间点
      * @return 读取到的能力代码
      */
     @Nullable
-    public static SkillCode loadSkill(String name, SkillCodeType type, int spellTimePoint) {
+    public static SkillCode loadSkillCode(String name, SkillCodeType type, int spellTimePoint) {
         try {
             SkillCode skillCode = (SkillCode) Class.forName("org.wpsoft.dltel.skill." + name).newInstance();
             skillCode.type = type;

@@ -14,11 +14,11 @@ public enum SkillCodeType {
      */
     Summon,
     /**
-     * 地图陷阱用能力代码
+     * 陷阱用能力代码
      */
-    MapTrap,
+    Trap,
     /**
-     * 触发陷阱用能力代码
+     * 干扰器用能力代码
      */
-    TriggerTrap
+    InterferenceUnit
 }
