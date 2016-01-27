@@ -1,10 +1,10 @@
-package org.wpsoft.dltel.spellskill;
+package org.wpsoft.dltel.executecode;
 
 /**
- * 技能发动时间
+ * 能力代码发动时间
  * Created by WinUP on 2016/1/24.
  */
-public enum SpellTimePoint {
+public enum ExecuteTimePoint {
     NotSpell(0),
     Now(1),
     GameStart(2),
@@ -29,11 +29,19 @@ public enum SpellTimePoint {
 
     private int value;
 
+    /**
+     * 获得能力代码发动时间对应的数值
+     * @return 发动时间对应的数值
+     */
     public int getValue(){
         return this.value;
     }
 
-    SpellTimePoint(int i) {
+    /**
+     * 声明新的能力代码发动时间
+     * @param i 发动时间对应的数值
+     */
+    ExecuteTimePoint(int i) {
         this.value = i;
     }
 }

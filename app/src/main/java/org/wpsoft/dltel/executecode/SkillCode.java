@@ -1,33 +1,31 @@
-package org.wpsoft.dltel.spellskill;
+package org.wpsoft.dltel.executecode;
 
 import android.support.annotation.Nullable;
-import org.wpsoft.dltel.deck.Card;
-import org.wpsoft.dltel.deck.SkillType;
 
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 /**
- * 表示一个技能
+ * 表示一段能力代码
  * Created by WinUP on 2016/1/20.
  */
-public abstract class Skill implements Serializable {
+public abstract class SkillCode implements Serializable {
     private static final long serialVersionUID = 1L;
-    private SkillType type;
+    private SkillCodeType type;
     private int spellTimePoint = 0;
 
     /**
-     * 获取技能类型
+     * 获取能力代码类型
      *
-     * @return 技能类型
+     * @return 能力代码类型
      */
-    public SkillType getType() {
+    public SkillCodeType getType() {
         return type;
     }
 
     /**
-     * 技能发动时间
+     * 能力代码发动时间
      *
      * @return 发动时间
      */
@@ -36,25 +34,25 @@ public abstract class Skill implements Serializable {
     }
 
     /**
-     * 咏唱技能
+     * 执行能力代码
      *
-     * @param parameter 咏唱参数
-     * @return 咏唱结果
+     * @param parameter 执行参数
+     * @return 执行结果
      */
-    public abstract SpellParameter spell(SpellParameter parameter);
+    public abstract ExecuteParameter execute(ExecuteParameter parameter);
 
     /**
-     * 从文件读取技能
+     * 从文件读取能力代码
      *
      * @param name 文件名称(assets/skill/下)
-     * @param type 技能类型
-     * @return 读取到的技能
+     * @param type 能力代码类型
+     * @return 读取到的能力代码
      */
     @Nullable
-    public static Skill loadSkill(String name, SkillType type, int spellTimePoint) {
+    public static SkillCode loadSkill(String name, SkillCodeType type, int spellTimePoint) {
         try {
             ObjectInputStream skillFile = new ObjectInputStream(new FileInputStream("file:///android_asset/skill/" + name));
-            Skill skill = (Skill) skillFile.readObject();
+            SkillCode skill = (SkillCode) skillFile.readObject();
             skill.type = type;
             skill.spellTimePoint = spellTimePoint;
             return skill;

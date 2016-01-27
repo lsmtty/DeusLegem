@@ -1,8 +1,9 @@
 package org.wpsoft.dltel.deck;
 
 import org.cocos2d.nodes.CCSprite;
-import org.wpsoft.dltel.spellskill.Skill;
-import org.wpsoft.dltel.spellskill.SpellParameter;
+import org.wpsoft.dltel.executecode.SkillCode;
+import org.wpsoft.dltel.executecode.SkillCodeType;
+import org.wpsoft.dltel.executecode.ExecuteParameter;
 
 /**
  * 表示一张卡牌
@@ -12,10 +13,10 @@ public final class Card extends CCSprite {
     private int id;
     private String imagePath;
     private Deck deck;
-    private Skill beforeUsingCheckSkill;
-    private Skill usingCheckSkill;
-    private Skill afterUsingCheckSkill;
-    private Skill useSkill;
+    private SkillCode beforeUsingCheckSkill;
+    private SkillCode usingCheckSkill;
+    private SkillCode afterUsingCheckSkill;
+    private SkillCode useSkill;
 
     /**
      * 卡牌使用条件检查
@@ -24,10 +25,10 @@ public final class Card extends CCSprite {
      * @return 使用条件检查结果
      */
     public boolean usingCheck(boolean isSystemAutoCheck) {
-        SpellParameter parameter = new SpellParameter(false);
-        beforeUsingCheckSkill.spell(parameter);
-        boolean answer = usingCheckSkill.spell(parameter).isCancelNext();
-        afterUsingCheckSkill.spell(parameter);
+        ExecuteParameter parameter = new ExecuteParameter(false);
+        beforeUsingCheckSkill.execute(parameter);
+        boolean answer = usingCheckSkill.execute(parameter).isCancelNext();
+        afterUsingCheckSkill.execute(parameter);
         return !answer;
     }
 
@@ -36,8 +37,8 @@ public final class Card extends CCSprite {
      */
     public Card use() {
         if (!usingCheck(true)) return this;
-        deck.moveCard(this, CardState.Spelling);
-        useSkill.spell(new SpellParameter(false));
+        deck.moveCard(this, CardState.Analysing);
+        useSkill.execute(new ExecuteParameter(false));
         deck.moveCard(this, CardState.InCemetery);
         return this;
     }
@@ -113,10 +114,10 @@ public final class Card extends CCSprite {
         this.id = id;
         this.imagePath = imagePath;
         try {
-            this.beforeUsingCheckSkill = Skill.loadSkill(beforeUsingCheckSkillPath, SkillType.Normal, 1);
-            this.usingCheckSkill = Skill.loadSkill(afterUsingCheckSkillPath, SkillType.Normal, 1);
-            this.afterUsingCheckSkill = Skill.loadSkill(usingCheckSkillPath, SkillType.Normal, 1);
-            this.useSkill = Skill.loadSkill(useSkillPath, SkillType.Normal, 1);
+            this.beforeUsingCheckSkill = SkillCode.loadSkill(beforeUsingCheckSkillPath, SkillCodeType.Normal, 1);
+            this.usingCheckSkill = SkillCode.loadSkill(afterUsingCheckSkillPath, SkillCodeType.Normal, 1);
+            this.afterUsingCheckSkill = SkillCode.loadSkill(usingCheckSkillPath, SkillCodeType.Normal, 1);
+            this.useSkill = SkillCode.loadSkill(useSkillPath, SkillCodeType.Normal, 1);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

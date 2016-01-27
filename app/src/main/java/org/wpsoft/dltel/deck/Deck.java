@@ -2,8 +2,8 @@ package org.wpsoft.dltel.deck;
 
 import android.support.annotation.Nullable;
 import org.wpsoft.dltel.Player;
-import org.wpsoft.dltel.spellskill.SpellService;
-import org.wpsoft.dltel.spellskill.SpellTimePoint;
+import org.wpsoft.dltel.executecode.ExecuteService;
+import org.wpsoft.dltel.executecode.ExecuteTimePoint;
 
 import java.util.*;
 
@@ -14,7 +14,7 @@ import java.util.*;
 public final class Deck {
     private LinkedList<Card> unused = new LinkedList<>();
     private LinkedList<Card> hand = new LinkedList<>();
-    private LinkedList<Card> spelling = new LinkedList<>();
+    private LinkedList<Card> analysing = new LinkedList<>();
     private LinkedList<Card> cemetery = new LinkedList<>();
     private LinkedList<Servant> servantHall = new LinkedList<>();
     private Hashtable<Card, CardState> cardState = new Hashtable<>();
@@ -40,12 +40,12 @@ public final class Deck {
     }
 
     /**
-     * 获取正在发动的卡牌的列表
+     * 获取正在解析的卡牌的列表
      *
-     * @return 正在发动的卡牌的列表
+     * @return 正在解析的卡牌的列表
      */
     public List<Card> getSpellingList() {
-        return Collections.unmodifiableList(spelling);
+        return Collections.unmodifiableList(analysing);
     }
 
     /**
@@ -107,7 +107,7 @@ public final class Deck {
     }
 
     /**
-     * 从牌组中删除卡牌（不更新卡牌总数）
+     * 从牌组中删除卡牌（不更新卡牌总数，仅用于Private环境）
      *
      * @param card 要删除的卡牌
      */
@@ -119,8 +119,8 @@ public final class Deck {
             case InHand:
                 hand.remove(card);
                 break;
-            case Spelling:
-                spelling.remove(card);
+            case Analysing:
+                analysing.remove(card);
                 break;
             case Unused:
                 unused.remove(card);
@@ -136,10 +136,10 @@ public final class Deck {
     @Nullable
     public Card draw() {
         if (unused.size() < 1) return null;
-        boolean answer = SpellService.getInstance().fireSpellTimePoint(SpellTimePoint.DrawBefore).isCancelNext();
+        boolean answer = ExecuteService.getInstance().executeTimePoint(ExecuteTimePoint.DrawBefore).isCancelNext();
         if (answer) return null;
         Card card = moveCard(unused.pop(), CardState.InHand);
-        answer = SpellService.getInstance().fireSpellTimePoint(SpellTimePoint.DrawAfter).isCancelNext();
+        answer = ExecuteService.getInstance().executeTimePoint(ExecuteTimePoint.DrawAfter).isCancelNext();
         if (answer) {
             moveCard(card, CardState.Unused);
             return null;
@@ -165,8 +165,8 @@ public final class Deck {
             case InCemetery:
                 cemetery.push(card);
                 break;
-            case Spelling:
-                spelling.push(card);
+            case Analysing:
+                analysing.push(card);
         }
         setCardState(card, targetState);
         return card;
