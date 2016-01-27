@@ -1,8 +1,13 @@
 package org.wpsoft.dltel.spellskill;
 
+import android.support.v4.app.INotificationSideChannel;
+
 import org.wpsoft.dltel.Card;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * 表示一个技能
@@ -27,6 +32,7 @@ public abstract class Skill implements Serializable {
     public Card setCard(Card card){
         this.card = card;
         return card;
+
     }
 
     /**

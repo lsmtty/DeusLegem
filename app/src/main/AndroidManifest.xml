@@ -9,7 +9,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity android:name=".engine.MainActivity"
-            android:launchMode="standard"
             android:screenOrientation="landscape"
             >
             <intent-filter>
@@ -17,8 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.wpsoft.dltel.SecondActivity"
-            >
+        <activity android:name="org.wpsoft.dltel.SecondActivity">
         </activity>
     </application>
 
