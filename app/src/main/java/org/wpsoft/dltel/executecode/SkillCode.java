@@ -51,11 +51,10 @@ public abstract class SkillCode implements Serializable {
     @Nullable
     public static SkillCode loadSkill(String name, SkillCodeType type, int spellTimePoint) {
         try {
-            ObjectInputStream skillFile = new ObjectInputStream(new FileInputStream("file:///android_asset/skill/" + name));
-            SkillCode skill = (SkillCode) skillFile.readObject();
-            skill.type = type;
-            skill.spellTimePoint = spellTimePoint;
-            return skill;
+            SkillCode skillCode = (SkillCode) Class.forName("org.wpsoft.dltel.skill." + name).newInstance();
+            skillCode.type = type;
+            skillCode.spellTimePoint = spellTimePoint;
+            return skillCode;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
