@@ -1,7 +1,7 @@
-package org.wpsoft.dltel.executecode;
+package org.wpsoft.dltel.message;
 
 /**
- * SpellSkillSystem - 消息监听器
+ * 消息监听器
  * Created by WinUP on 2016/1/20.
  */
 public abstract class Listener {

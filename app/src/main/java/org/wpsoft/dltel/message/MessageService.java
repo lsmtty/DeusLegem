@@ -1,11 +1,11 @@
-package org.wpsoft.dltel.executecode;
+package org.wpsoft.dltel.message;
 
 import android.os.Looper;
 import android.os.Message;
 import android.os.Handler;
 
 /**
- * SpellSkillSystem - 消息服务
+ * 消息服务
  * Created by WinUP on 2016/1/20.
  */
 public final class MessageService extends Thread {
@@ -19,20 +19,38 @@ public final class MessageService extends Thread {
     /**
      * 获得消息服务的唯一实例
      *
-     * @return 消息服务的唯一实例,双重校验锁写法
+     * @return 消息服务的唯一实例, 双重校验锁写法
      */
     public static MessageService getInstance() {
         if (instance == null) {
-            synchronized (MessageService.class)
-            {
-                if(instance==null)
-                {
+            synchronized (MessageService.class) {
+                if (instance == null) {
                     instance = new MessageService();
                     instance.start();
                 }
             }
         }
         return instance;
+    }
+
+    /**
+     * 添加一个消息监听器
+     *
+     * @param listener 要添加的消息监听器
+     */
+    public Listener listen(Listener listener) {
+        ListenerList.add(listener);
+        return listener;
+    }
+
+    /**
+     * 去除一个消息监听器
+     *
+     * @param listener 要去除的消息监听器
+     */
+    public Listener cancelListen(Listener listener) {
+        ListenerList.remove(listener);
+        return listener;
     }
 
     /**
@@ -70,8 +88,6 @@ public final class MessageService extends Thread {
 
         @Override
         public void handleMessage(Message msg) {
-            ListenerList.updateRemoving();
-            ListenerList.updateAdding();
             ListenerList.broadcastMessage((String) msg.obj, msg.what);
         }
     }
