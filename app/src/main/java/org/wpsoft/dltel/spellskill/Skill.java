@@ -1,7 +1,11 @@
 package org.wpsoft.dltel.spellskill;
 
+import android.support.annotation.Nullable;
 import org.wpsoft.dltel.deck.Card;
+import org.wpsoft.dltel.deck.SkillType;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 /**
@@ -10,29 +14,53 @@ import java.io.Serializable;
  */
 public abstract class Skill implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Card card;
+    private SkillType type;
+    private int spellTimePoint = 0;
 
     /**
-     * 获取技能对应的卡牌
-     * @return 技能对应的卡牌
+     * 获取技能类型
+     *
+     * @return 技能类型
      */
-    public Card getCard() {
-        return card;
+    public SkillType getType() {
+        return type;
     }
 
     /**
-     * 设置技能对应的卡牌
-     * @param card 目标卡牌
+     * 技能发动时间
+     *
+     * @return 发动时间
      */
-    public Card setCard(Card card){
-        this.card = card;
-        return card;
+    public int getSpellTimePoint() {
+        return spellTimePoint;
     }
 
     /**
      * 咏唱技能
+     *
      * @param parameter 咏唱参数
      * @return 咏唱结果
      */
-    public abstract Object spell(Object... parameter);
+    public abstract SpellParameter spell(SpellParameter parameter);
+
+    /**
+     * 从文件读取技能
+     *
+     * @param name 文件名称(assets/skill/下)
+     * @param type 技能类型
+     * @return 读取到的技能
+     */
+    @Nullable
+    public static Skill loadSkill(String name, SkillType type, int spellTimePoint) {
+        try {
+            ObjectInputStream skillFile = new ObjectInputStream(new FileInputStream("file:///android_asset/skill/" + name));
+            Skill skill = (Skill) skillFile.readObject();
+            skill.type = type;
+            skill.spellTimePoint = spellTimePoint;
+            return skill;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
 }

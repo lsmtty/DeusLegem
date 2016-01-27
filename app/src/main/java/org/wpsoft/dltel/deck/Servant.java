@@ -1,7 +1,6 @@
 package org.wpsoft.dltel.deck;
 
 import org.cocos2d.nodes.CCSprite;
-import org.wpsoft.dltel.ServantDefinition;
 
 /**
  * 从者
@@ -24,6 +23,9 @@ public final class Servant extends CCSprite {
         return this;
     }
 
+    public Servant(String name){
+        definition = new ServantDefinition(name);
+    }
 
 
 }

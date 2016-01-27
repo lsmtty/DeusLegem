@@ -2,11 +2,7 @@ package org.wpsoft.dltel.deck;
 
 import org.cocos2d.nodes.CCSprite;
 import org.wpsoft.dltel.spellskill.Skill;
-import org.wpsoft.dltel.spellskill.SpellService;
-import org.wpsoft.dltel.spellskill.SpellTimePoint;
-
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
+import org.wpsoft.dltel.spellskill.SpellParameter;
 
 /**
  * 表示一张卡牌
@@ -16,7 +12,6 @@ public final class Card extends CCSprite {
     private int id;
     private String imagePath;
     private Deck deck;
-    private CardType type;
     private Skill beforeUsingCheckSkill;
     private Skill usingCheckSkill;
     private Skill afterUsingCheckSkill;
@@ -29,10 +24,11 @@ public final class Card extends CCSprite {
      * @return 使用条件检查结果
      */
     public boolean usingCheck(boolean isSystemAutoCheck) {
-        beforeUsingCheckSkill.spell(isSystemAutoCheck);
-        boolean answer = (boolean) usingCheckSkill.spell();
-        afterUsingCheckSkill.spell(isSystemAutoCheck, answer);
-        return answer;
+        SpellParameter parameter = new SpellParameter(false);
+        beforeUsingCheckSkill.spell(parameter);
+        boolean answer = usingCheckSkill.spell(parameter).isCancelNext();
+        afterUsingCheckSkill.spell(parameter);
+        return !answer;
     }
 
     /**
@@ -41,47 +37,9 @@ public final class Card extends CCSprite {
     public Card use() {
         if (!usingCheck(true)) return this;
         deck.moveCard(this, CardState.Spelling);
-        SpellTimePoint timePoint = SpellTimePoint.Now;
-        switch (type) {
-            case SkillCard:
-                timePoint = SpellTimePoint.BeforeUseSkillCard;
-                break;
-            case SummonCard:
-                timePoint = SpellTimePoint.BeforeUseSummonCard;
-                break;
-            case MapTrapCard:
-                timePoint = SpellTimePoint.BeforeUseMapTrapCard;
-                break;
-            case TriggerTrapCard:
-                timePoint = SpellTimePoint.BeforeUseTriggerTrapCard;
-        }
-        boolean answer = SpellService.getInstance().fireSpellTimePoint(timePoint);
-        if (answer) {
-            SpellService.getInstance().spell(useSkill);
-            switch (type) {
-                case SkillCard:
-                    timePoint = SpellTimePoint.AfterUseSkillCard;
-                    break;
-                case SummonCard:
-                    timePoint = SpellTimePoint.AfterUseSummonCard;
-                    break;
-                case MapTrapCard:
-                    timePoint = SpellTimePoint.AfterUseMapTrapCard;
-                    break;
-                case TriggerTrapCard:
-                    timePoint = SpellTimePoint.AfterUseTriggerTrapCard;
-            }
-            SpellService.getInstance().fireSpellTimePoint(timePoint);
-        }
-        return this;
-    }
-
-    /**
-     * 将卡牌送去墓地
-     */
-    public void destroy() {
-        SpellService.getInstance().tryCancelSpell(useSkill);
+        useSkill.spell(new SpellParameter(false));
         deck.moveCard(this, CardState.InCemetery);
+        return this;
     }
 
     /**
@@ -141,39 +99,24 @@ public final class Card extends CCSprite {
     }
 
     /**
-     * 获取卡牌类型
-     *
-     * @return 卡牌类型
-     */
-    public CardType getType() {
-        return type;
-    }
-
-    /**
      * 获得一张新的卡牌
      *
      * @param id                        卡牌ID
      * @param imagePath                 卡牌图像路径
-     * @param type                      卡牌类型
      * @param beforeUsingCheckSkillPath 卡牌使用检查前技能的路径
      * @param usingCheckSkillPath       卡牌使用检查技能的路径
      * @param afterUsingCheckSkillPath  卡牌使用检查后技能的路径
      * @param useSkillPath              卡牌使用技能路径
      */
-    public Card(int id, String imagePath, CardType type, String beforeUsingCheckSkillPath, String usingCheckSkillPath, String afterUsingCheckSkillPath, String useSkillPath) {
+    public Card(int id, String imagePath, String beforeUsingCheckSkillPath, String usingCheckSkillPath, String afterUsingCheckSkillPath, String useSkillPath) {
         super(imagePath);
         this.id = id;
         this.imagePath = imagePath;
-        this.type = type;
         try {
-            ObjectInputStream skillFile = new ObjectInputStream(new FileInputStream("file:///android_asset/skill" + beforeUsingCheckSkillPath));
-            this.beforeUsingCheckSkill = (Skill) skillFile.readObject();
-            skillFile = new ObjectInputStream(new FileInputStream("file:///android_asset/skill" + usingCheckSkillPath));
-            this.usingCheckSkill = (Skill) skillFile.readObject();
-            skillFile = new ObjectInputStream(new FileInputStream("file:///android_asset/skill" + afterUsingCheckSkillPath));
-            this.afterUsingCheckSkill = (Skill) skillFile.readObject();
-            skillFile = new ObjectInputStream(new FileInputStream("file:///android_asset/skill" + useSkillPath));
-            this.useSkill = (Skill) skillFile.readObject();
+            this.beforeUsingCheckSkill = Skill.loadSkill(beforeUsingCheckSkillPath, SkillType.Normal, 1);
+            this.usingCheckSkill = Skill.loadSkill(afterUsingCheckSkillPath, SkillType.Normal, 1);
+            this.afterUsingCheckSkill = Skill.loadSkill(usingCheckSkillPath, SkillType.Normal, 1);
+            this.useSkill = Skill.loadSkill(useSkillPath, SkillType.Normal, 1);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

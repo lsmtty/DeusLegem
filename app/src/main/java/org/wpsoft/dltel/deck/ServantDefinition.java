@@ -1,4 +1,4 @@
-package org.wpsoft.dltel;
+package org.wpsoft.dltel.deck;
 
 /**
  * 从者属性定义
@@ -6,22 +6,24 @@ package org.wpsoft.dltel;
  */
 public final class ServantDefinition {
     private String name;
-    private int hitPoint;
+    private int lifePoint;
     private int attackPoint;
+    private int minAttackRange;
+    private int maxAttackRange;
 
     public String getName() {
         return name;
     }
 
-    public int getHitPoint() {
-        return hitPoint;
+    public int getLifePoint() {
+        return lifePoint;
     }
 
     public int getAttackPoint() {
         return attackPoint;
     }
 
-    public ServantDefinition(){
+    public ServantDefinition(String name){
 
     }
 }

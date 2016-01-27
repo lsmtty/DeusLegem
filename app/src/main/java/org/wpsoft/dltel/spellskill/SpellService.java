@@ -1,5 +1,6 @@
 package org.wpsoft.dltel.spellskill;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 /**
@@ -8,32 +9,71 @@ import java.util.Stack;
  */
 public final class SpellService {
     private static SpellService instance;
-    private static Stack<Skill> spellList = new Stack<>();
+    private static final ArrayList<Skill> skills = new ArrayList<>();
 
     public static SpellService getInstance() {
         if (instance == null) instance = new SpellService();
         return instance;
     }
 
-    public synchronized boolean fireSpellTimePoint(SpellTimePoint timePoint) {
-        return true;
+    public synchronized Skill register(Skill skill) {
+        if (!skills.contains(skill)) skills.add(skill);
+        return skill;
     }
 
-    public synchronized void spell(Skill target, Object... parameter) {
-        spellList.push(target);
-
+    public SpellParameter fireSpellTimePoint(SpellTimePoint timePoint, Object... parameter) {
+        Stack<Skill> skillStack = new Stack<>();
+        SpellParameter param = new SpellParameter(false, parameter);
+        synchronized (skills){
+            generateSkillStack(skillStack, timePoint);
+            while (skillStack.size() > 0) {
+                Skill skill = skillStack.peek();
+                switch (skill.getType()) {
+                    case Normal:
+                        generateSkillStack(skillStack, SpellTimePoint.NormalSkillActiveBefore);
+                        break;
+                    case Summon:
+                        generateSkillStack(skillStack, SpellTimePoint.SummonBefore);
+                        break;
+                    case MapTrap:
+                        generateSkillStack(skillStack, SpellTimePoint.MapTrapActiveBefore);
+                        break;
+                    case TriggerTrap:
+                        generateSkillStack(skillStack, SpellTimePoint.TriggerTrapActiveBefore);
+                        break;
+                }
+                skill = skillStack.pop();
+                param = skill.spell(param);
+                switch (skill.getType()) {
+                    case Normal:
+                        generateSkillStack(skillStack, SpellTimePoint.NormalSkillActiveAfter);
+                        break;
+                    case Summon:
+                        generateSkillStack(skillStack, SpellTimePoint.SummonAfter);
+                        break;
+                    case MapTrap:
+                        generateSkillStack(skillStack, SpellTimePoint.MapTrapActiveAfter);
+                        break;
+                    case TriggerTrap:
+                        generateSkillStack(skillStack, SpellTimePoint.TriggerTrapActiveAfter);
+                        break;
+                }
+            }
+        }
+        return param;
     }
 
-    public synchronized void tryCancelSpell(Skill target) {
-
+    private void generateSkillStack(Stack<Skill> skillStack, SpellTimePoint timePoint) {
+        for (Skill skill : skills) {
+            if (((skill.getSpellTimePoint() & timePoint.getValue()) != 0) && (!skillStack.contains(skill)))
+                skillStack.push(skill);
+        }
     }
 
-    private void startSpell() {
-
-    }
-
-    private void checkSpellList(SpellTimePoint timePoint) {
-
+    public void tryCancelSpell(Skill skill) {
+        synchronized (skills) {
+            if (skills.contains(skill)) skills.remove(skill);
+        }
     }
 
 }

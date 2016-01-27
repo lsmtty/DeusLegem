@@ -136,11 +136,11 @@ public final class Deck {
     @Nullable
     public Card draw() {
         if (unused.size() < 1) return null;
-        boolean answer = SpellService.getInstance().fireSpellTimePoint(SpellTimePoint.BeforeDraw);
-        if (!answer) return null;
+        boolean answer = SpellService.getInstance().fireSpellTimePoint(SpellTimePoint.DrawBefore).isCancelNext();
+        if (answer) return null;
         Card card = moveCard(unused.pop(), CardState.InHand);
-        answer = SpellService.getInstance().fireSpellTimePoint(SpellTimePoint.AfterDraw);
-        if (!answer) {
+        answer = SpellService.getInstance().fireSpellTimePoint(SpellTimePoint.DrawAfter).isCancelNext();
+        if (answer) {
             moveCard(card, CardState.Unused);
             return null;
         }
