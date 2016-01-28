@@ -1,9 +1,7 @@
 package org.wpsoft.dltel.deck;
 
 import org.cocos2d.nodes.CCSprite;
-import org.wpsoft.dltel.executecode.SkillCode;
-import org.wpsoft.dltel.executecode.SkillCodeType;
-import org.wpsoft.dltel.executecode.ExecuteParameter;
+import org.wpsoft.dltel.executecode.*;
 
 /**
  * 表示一张卡牌
@@ -25,9 +23,10 @@ public final class Card extends CCSprite {
      * @return 使用条件检查结果
      */
     public boolean usingCheck(boolean isSystemAutoCheck) {
-        ExecuteParameter parameter = new ExecuteParameter(false);
+        ExecuteParameter parameter = new ExecuteParameter(false, true, isSystemAutoCheck);
         beforeUsingCheckSkill.execute(parameter);
-        boolean answer = usingCheckSkill.execute(parameter).isCancelNext();
+        parameter = usingCheckSkill.execute(parameter);
+        boolean answer = parameter.isCancelNext();
         afterUsingCheckSkill.execute(parameter);
         return !answer;
     }
@@ -38,7 +37,7 @@ public final class Card extends CCSprite {
     public Card use() {
         if (!usingCheck(true)) return this;
         deck.moveCard(this, CardState.Analysing);
-        useSkill.execute(new ExecuteParameter(false));
+        useSkill.execute(new ExecuteParameter(false, true));
         deck.moveCard(this, CardState.InCemetery);
         return this;
     }
@@ -114,9 +113,9 @@ public final class Card extends CCSprite {
         this.id = id;
         this.imagePath = imagePath;
         try {
-            this.beforeUsingCheckSkill = SkillCode.loadSkillCode(beforeUsingCheckSkillPath, SkillCodeType.Normal, 1);
-            this.usingCheckSkill = SkillCode.loadSkillCode(afterUsingCheckSkillPath, SkillCodeType.Normal, 1);
-            this.afterUsingCheckSkill = SkillCode.loadSkillCode(usingCheckSkillPath, SkillCodeType.Normal, 1);
+            this.beforeUsingCheckSkill = SkillCode.loadSkillCode(beforeUsingCheckSkillPath, SkillCodeType.UsingCheck, 1);
+            this.usingCheckSkill = SkillCode.loadSkillCode(afterUsingCheckSkillPath, SkillCodeType.UsingCheck, 1);
+            this.afterUsingCheckSkill = SkillCode.loadSkillCode(usingCheckSkillPath, SkillCodeType.UsingCheck, 1);
             this.useSkill = SkillCode.loadSkillCode(useSkillPath, SkillCodeType.Normal, 1);
         } catch (Exception ex) {
             ex.printStackTrace();

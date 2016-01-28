@@ -13,6 +13,7 @@ public final class ExecuteService {
 
     /**
      * 获得能力代码执行服务的唯一实例
+     *
      * @return 能力代码执行服务的唯一实例
      */
     public static ExecuteService getInstance() {
@@ -22,6 +23,7 @@ public final class ExecuteService {
 
     /**
      * 注册一段能力代码到执行服务
+     *
      * @param skill 要注册的能力代码
      */
     public synchronized SkillCode register(SkillCode skill) {
@@ -30,15 +32,26 @@ public final class ExecuteService {
     }
 
     /**
+     * 从执行服务取消一段能力代码的注册
+     *
+     * @param skill 要取消注册的能力代码
+     */
+    public synchronized SkillCode cancelRegister(SkillCode skill) {
+        if (skills.contains(skill)) skills.remove(skill);
+        return skill;
+    }
+
+    /**
      * 执行指定时间点的所有能力代码
+     *
      * @param timePoint 目标时间点
      * @param parameter 执行参数
      * @return 执行结果
      */
     public ExecuteParameter executeTimePoint(ExecuteTimePoint timePoint, Object... parameter) {
         Stack<SkillCode> skillStack = new Stack<>();
-        ExecuteParameter param = new ExecuteParameter(false, parameter);
-        synchronized (skills){
+        ExecuteParameter param = new ExecuteParameter(false, true, parameter);
+        synchronized (skills) {
             generateSkillStack(skillStack, timePoint);
             while (skillStack.size() > 0) {
                 SkillCode skill = skillStack.peek();
@@ -58,6 +71,7 @@ public final class ExecuteService {
                 }
                 skill = skillStack.pop();
                 param = skill.execute(param);
+                if (param.canRemove()) skills.remove(skill);
                 switch (skill.getType()) {
                     case Normal:
                         generateSkillStack(skillStack, ExecuteTimePoint.NormalSkillActiveAfter);
@@ -79,8 +93,9 @@ public final class ExecuteService {
 
     /**
      * 生成能力代码执行队列（仅用于Private环境）
+     *
      * @param skillStack 上一层队列
-     * @param timePoint 执行时间点
+     * @param timePoint  执行时间点
      */
     private void generateSkillStack(Stack<SkillCode> skillStack, ExecuteTimePoint timePoint) {
         for (SkillCode skill : skills) {
