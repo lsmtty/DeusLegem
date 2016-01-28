@@ -137,9 +137,29 @@ public class CommonUtils
             Log.i("message","map is null");
             return  -1;
         }
-        int row = (int)(point.x+0.5/ tileSize.width);
-        int col = (int)(point.y+0.5/tileSize.getHeight());
+        int row = (int)((point.x+0.5)/ tileSize.getWidth());
+        int col = (int)((point.y+0.5)/tileSize.getHeight());
         col = (int)mapSize.getHeight() -1 - col;
         return  row + col * (int)mapSize.getWidth();
+    }
+
+    /**
+     * 根据节点id(从0开始)获得点的位置
+     * @param map
+     * @param tileId
+     * @return
+     */
+    public static CGPoint getPointByTileId(CCTMXTiledMap map,Integer tileId)
+    {
+        CGSize contentSize = map.getContentSize();
+        CGSize mapSize = map.getMapSize();
+        CGSize tileSize = map.getTileSize();
+        if(tileId<0 || (tileId > mapSize.getHeight() * mapSize.getWidth() - 1 ) )
+            return null;
+        int row = tileId /(int)mapSize.getWidth();
+        int col = tileId % (int)mapSize.getWidth();
+        CGPoint target = new CGPoint();
+        target.set((0.5f+col) * tileSize.getWidth(),contentSize.getHeight() - (0.5f+row) * tileSize.getHeight());
+        return  target;
     }
 }

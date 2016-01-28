@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="16" height="8" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="1 (28)" tilewidth="32" tileheight="32" >
+ <tileset firstgid="1" name="1 (28)" tilewidth="32" tileheight="32" spacing="1" margin="1">
   <image source="1 (28).jpg" width="1024" height="615"/>
  </tileset>
  <tileset firstgid="559" name="water" tilewidth="32" tileheight="32">
@@ -17,7 +17,6 @@
   </data>
  </layer>
  <objectgroup name="land" width="16" height="8">
-  <object x="637" y="79"/>
   <object x="14" y="15"/>
   <object x="46" y="17"/>
   <object x="80" y="15"/>
@@ -128,8 +127,6 @@
   <object x="434" y="15"/>
   <object x="463" y="14"/>
   <object x="464" y="48"/>
-  <object x="225" y="-23" width="1"/>
-  <object x="200" y="-53"/>
  </objectgroup>
  <objectgroup name="water" width="16" height="8">
   <object x="143" y="47"/>

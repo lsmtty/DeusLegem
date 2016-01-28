@@ -1,11 +1,9 @@
 package com.example.deuslegem.layer;
 
-import android.net.LinkAddress;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ListView;
 
+import com.example.deuslegem.utils.AStar;
 import com.example.deuslegem.utils.CommonUtils;
 
 import org.cocos2d.layers.CCTMXLayer;
@@ -54,9 +52,9 @@ public class PlayLayer extends  BaseLayer
         zombie.setAnchorPoint(0.5f, 0.5f);
         Log.i("message",land.get(0).toString());
         zombie.setPosition(land.get(0));
-        zombie.setScale(0.8);
+        zombie.setScale(0.2462);
         standTile = 0; //设置起始格子id为0
-        this.addChild(zombie,1);
+        this.addChild(zombie, 1);
     }
 
     private void loadMap() {
@@ -67,7 +65,7 @@ public class PlayLayer extends  BaseLayer
         map.setAnchorPoint(0.5f, 0.5f);
         CGSize size = map.getContentSize();
         map.setPosition(size.getWidth() / 2, size.getHeight() / 2);
-        map.setVisible(false);
+        map.setVisible(true);
         this.addChild(map,0);
         CGSize mapSize = map.getMapSize();
         tileInRow = (int)mapSize.getHeight();
@@ -98,29 +96,46 @@ public class PlayLayer extends  BaseLayer
                 temp++;
             }
         }
-
     }
 
     @Override
     public boolean ccTouchesBegan(MotionEvent event) {
-        /*if(actionFinsih)
+        if(actionFinsih)  //判断移动是否结束，只有移动结束后才可以进一步操作
         {
-            target = this.convertPrevTouchToNodeSpace(event); //转换成Cocos2d的坐标显示
-            CCTMXLayer layer = map.layerNamed("Tile Layer 2");
-            int targetTile = layer.tileGIDAt(target);
-                        Log.i("id", "第几个点" + targetTile);
-            ArrayList<Integer> path = findPath(layer,standTile, targetTile);
-            if(path!=null)
+            if(event==null)
+                Log.i("event","event is null");
+            target = this.convertTouchToNodeSpace(event); //转换成Cocos2d的坐标显示
+            int targetTile = CommonUtils.getTileId(map, target);
+            final  ArrayList<Integer> path = findPath(standTile, targetTile);
+            path.remove(0);
+            if(path.size()!=0)
             {
-                for (Integer i:path) {
-                    //找到tile的坐标
-                    CGPoint point = layer.tileset.rectForGID(i).origin;
-                    zombie.setPosition(point);
-                    standTile = i;
-                }
+                actionFinsih = false;
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            for (Integer i:path) {
+                                //找到tile的坐标
+                                if(i==-1)
+                                    break;
+                                CGPoint point = CommonUtils.getPointByTileId(map,i);
+                                zombie.setPosition(point);
+                                standTile = i;
+                                Thread.sleep(500);
+                            }
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }).start();
+
+                actionFinsih = true;
             }
             return  true;
-        }*/
+        }
         return super.ccTouchesBegan(event);
     }
 
@@ -131,8 +146,9 @@ public class PlayLayer extends  BaseLayer
      * @param targetTile    目标地点
      * @return
      */
-    private ArrayList<Integer> findPath(CCTMXLayer layer,int standTile, int targetTile)
+    private ArrayList<Integer> findPath(int standTile, int targetTile)
     {
-        return null;
+        AStar star = new AStar(modelMap,tileInRow,tileInCol);
+        return  star.search(standTile,targetTile);
     }
 }
