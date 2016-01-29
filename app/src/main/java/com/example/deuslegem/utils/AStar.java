@@ -106,7 +106,7 @@ public class AStar {
 
     private int checkCost(int startId, int targetId) {
         if (map[getRowNumberById(startId)][getColNumberById(startId)] == 1) {
-            if (map[getRowNumberById(targetId)][getColNumberById(targetId)] == 1)
+            if (map[getRowNumberById(targetId)][getColNumberById(targetId)] == 2)
                 return COST_ClimbMountain;
             else
                 return COST_Land;

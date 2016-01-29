@@ -2,11 +2,8 @@ package com.example.deuslegem.layer;
 
 import android.util.Log;
 import android.view.MotionEvent;
-
 import com.example.deuslegem.utils.AStar;
 import com.example.deuslegem.utils.CommonUtils;
-
-import org.cocos2d.layers.CCTMXLayer;
 import org.cocos2d.layers.CCTMXTiledMap;
 import org.cocos2d.nodes.CCSprite;
 import org.cocos2d.types.CGPoint;
@@ -50,9 +47,9 @@ public class PlayLayer extends  BaseLayer
         zombie.setFlipX(true);
         zombie.setAnchorPoint(0.5f, 0.5f);
         Log.i("message",land.get(0).toString());
-        zombie.setPosition(land.get(0));
+        zombie.setPosition(CommonUtils.getPointByTileId(map,85));
         zombie.setScale(0.2462);
-        standTile = 0; //设置起始格子id为0
+        standTile = 85; //设置起始格子id为0
         this.addChild(zombie, 1);
     }
 
@@ -101,37 +98,41 @@ public class PlayLayer extends  BaseLayer
     public boolean ccTouchesBegan(MotionEvent event) {
         if(actionFinsih)  //判断移动是否结束，只有移动结束后才可以进一步操作
         {
+            actionFinsih = false;
             if(event==null)
                 Log.i("event","event is null");
             target = this.convertTouchToNodeSpace(event); //转换成Cocos2d的坐标显示
             int targetTile = CommonUtils.getTileId(map, target);
-            final  ArrayList<Integer> path = findPath(standTile, targetTile);
-            path.remove(0);
-            if(path.size()!=0)
+            final ArrayList<Integer> path = findPath(standTile, targetTile);
+            if(path!=null)
             {
-                Log.i("startPoint",""+standTile);
-                actionFinsih = false;
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            for (Integer i:path) {
-                                //找到tile的坐标
-                                if(i==-1)
-                                    break;
-                                CGPoint point = CommonUtils.getPointByTileId(map,i);
-                                Log.i("path",""+i);
-                                zombie.setPosition(point);
-                                standTile = i;
-                                Thread.sleep(500);
+                path.remove(0);
+                if(path.size()!=0)
+                {
+                    Log.i("startPoint",""+standTile);
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                for (Integer i:path) {
+                                    //找到tile的坐标
+                                    if(i==-1)
+                                        break;
+                                    CGPoint point = CommonUtils.getPointByTileId(map,i);
+                                    Log.i("path",""+i);
+                                    zombie.setPosition(point);
+                                    standTile = i;
+                                    Thread.sleep(500);
+                                }
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
                         }
-                    }
-                }).start();
-                Log.i("endPoint",""+targetTile);
-                actionFinsih = true;
+                    }).start();
+                    Log.i("endPoint",""+targetTile);
+                    actionFinsih = true;
+                }
             }
             return  true;
         }
