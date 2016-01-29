@@ -15,19 +15,44 @@ public final class Servant extends CCSprite {
     private ServantDefinition definition;
     private SkillCode[] servantCodes;
 
+    /**
+     * 获取从者所在的牌组
+     *
+     * @return 从者所在的牌组
+     */
     public Deck getDeck() {
         return deck;
     }
 
+    /**
+     * 获取从者参数定义
+     *
+     * @return 从者参数定义
+     */
     public ServantDefinition getDefinition() {
         return definition;
     }
 
+    /**
+     * 设置从者所在的牌组
+     *
+     * @param deck 从者所在的牌组
+     */
     Servant setDeck(Deck deck) {
         this.deck = deck;
         return this;
     }
 
+    public Servant attack(Servant servant) {
+        servant.getDefinition().setLifePoint(-getDefinition().getAttackPoint(), true);
+        getDefinition().setLifePoint(servant.getDefinition().getAttackPoint() / 2, true);
+        if (getDefinition().getLifePoint() < 1) destroy();
+        return this;
+    }
+
+    /**
+     * 销毁从者
+     */
     public Servant destroy() {
         for (SkillCode skillCode : servantCodes) {
             ExecuteService.getInstance().cancelRegister(skillCode);
@@ -35,6 +60,13 @@ public final class Servant extends CCSprite {
         return this;
     }
 
+    /**
+     * 获得一个新的从者
+     *
+     * @param name            从者名称
+     * @param skillCodes      从者的所有能力代码
+     * @param skillTimePoints 这些能力代码的发动时间点
+     */
     public Servant(String name, String[] skillCodes, int[] skillTimePoints) {
         definition = new ServantDefinition(name);
         servantCodes = new ServantCode[skillCodes.length];
