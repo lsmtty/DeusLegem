@@ -40,7 +40,6 @@ public class PlayLayer extends  BaseLayer
         init();
     }
 
-
     private void init() {
         loadMap();
         loadZombie();
@@ -87,11 +86,11 @@ public class PlayLayer extends  BaseLayer
         {
             for(int j = 0;j < tileInCol;j++)
             {
-                if(landTile.contains(temp))
-                    modelMap[i][j] = 1;  //land节点
-                else if(mountainTile.contains(temp))    //山节点
+                if(landTile.contains(temp))             //land tile
+                    modelMap[i][j] = 1;
+                else if(mountainTile.contains(temp))    //mountain tile
                     modelMap[i][j] = 2;
-                else if(waterTile.contains(temp))       //水节点
+                else if(waterTile.contains(temp))       //water tile
                     modelMap[i][j] = 0;
                 temp++;
             }
@@ -110,6 +109,7 @@ public class PlayLayer extends  BaseLayer
             path.remove(0);
             if(path.size()!=0)
             {
+                Log.i("startPoint",""+standTile);
                 actionFinsih = false;
                 new Thread(new Runnable() {
                     @Override
@@ -120,18 +120,17 @@ public class PlayLayer extends  BaseLayer
                                 if(i==-1)
                                     break;
                                 CGPoint point = CommonUtils.getPointByTileId(map,i);
+                                Log.i("path",""+i);
                                 zombie.setPosition(point);
                                 standTile = i;
                                 Thread.sleep(500);
                             }
-
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-
                     }
                 }).start();
-
+                Log.i("endPoint",""+targetTile);
                 actionFinsih = true;
             }
             return  true;
