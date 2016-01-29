@@ -20,5 +20,13 @@ public enum SkillCodeType {
     /**
      * 干扰器用能力代码
      */
-    InterferenceUnit
+    InterferenceUnit,
+    /**
+     * 从者用能力代码
+     */
+    Servant,
+    /**
+     * 使用条件检查用能力代码
+     */
+    UsingCheck
 }

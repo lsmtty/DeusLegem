@@ -1,5 +1,6 @@
 package org.wpsoft.dltel.skill;
 
+import android.support.annotation.Nullable;
 import com.example.deuslegem.bean.TileNode;
 import org.wpsoft.dltel.executecode.SkillCode;
 import org.wpsoft.dltel.executecode.SkillCodeType;
@@ -29,6 +30,7 @@ public abstract class Trap extends SkillCode {
      * @param tileNode       陷阱能力代码对应的地图节点
      * @return 读取到的能力代码
      */
+    @Nullable
     public static SkillCode loadTrap(String name, SkillCodeType type, int spellTimePoint, TileNode tileNode) {
         SkillCode skillCode = SkillCode.loadSkillCode(name, type, spellTimePoint);
         if (!(skillCode instanceof Trap)) return null;
