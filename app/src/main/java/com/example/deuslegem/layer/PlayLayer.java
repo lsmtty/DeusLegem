@@ -47,9 +47,9 @@ public class PlayLayer extends  BaseLayer
         zombie.setFlipX(true);
         zombie.setAnchorPoint(0.5f, 0.5f);
         Log.i("message",land.get(0).toString());
-        zombie.setPosition(CommonUtils.getPointByTileId(map,85));
+        zombie.setPosition(CommonUtils.getPointByTileId(map,127));
         zombie.setScale(0.2462);
-        standTile = 85; //设置起始格子id为0
+        standTile = 127; //设置起始格子id为0
         this.addChild(zombie, 1);
     }
 
@@ -109,7 +109,7 @@ public class PlayLayer extends  BaseLayer
                 if(path.size()!=0)
                 {
                     Log.i("startPoint",""+standTile);
-
+                    path.remove(0);
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -122,7 +122,7 @@ public class PlayLayer extends  BaseLayer
                                     Log.i("path",""+i);
                                     zombie.setPosition(point);
                                     standTile = i;
-                                    Thread.sleep(500);
+                                    Thread.sleep(150);
                                 }
                             } catch (InterruptedException e) {
                                 e.printStackTrace();

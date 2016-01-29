@@ -20,8 +20,8 @@ public class AStar {
     private List<TileNode> closeList;//关闭列表
     private final int COST_Land = 10;//平地移动路径评分
     private final int COST_Mountain = 10;//山地间移动
-    private final int COST_ClimbMountain = 100;//爬山的路径评分
-    private final int COST_DownMountain = 50; //下山的路径评分
+    private final int COST_ClimbMountain = 30;//爬山的路径评分
+    private final int COST_DownMountain = 20; //下山的路径评分
     private int row;//行
     private int column;//列
 
@@ -86,7 +86,7 @@ public class AStar {
                 checkPath(targetId, TileNode, eTileNode, checkCost(TileNode.getTileId(), targetId));
             }
             //右
-            if ((getRowNumberById(TileNode.getTileId())) + 1 <= colNumber - 1) {
+            if ((getColNumberById(TileNode.getTileId())) + 1 <= colNumber - 1) {
                 int targetId = TileNode.getTileId() + 1;
                 checkPath(targetId, TileNode, eTileNode, checkCost(TileNode.getTileId(), targetId));
             }
@@ -106,7 +106,7 @@ public class AStar {
 
     private int checkCost(int startId, int targetId) {
         if (map[getRowNumberById(startId)][getColNumberById(startId)] == 1) {
-            if (map[getRowNumberById(targetId)][getColNumberById(targetId)] == 1)
+            if (map[getRowNumberById(targetId)][getColNumberById(targetId)] == 2)
                 return COST_ClimbMountain;
             else
                 return COST_Land;
