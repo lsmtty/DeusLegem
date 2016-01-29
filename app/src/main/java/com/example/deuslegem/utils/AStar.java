@@ -24,7 +24,7 @@ public class AStar {
     private final int COST_DownMountain = 50; //下山的路径评分
     private int row;//行
     private int column;//列
-
+    private ArrayList<TileNode> nodes;
     public AStar(int[][] map, int row, int column) {
         this.map = map;
         this.row = row;
@@ -33,30 +33,53 @@ public class AStar {
         closeList = new ArrayList<>();
         colNumber = map[0].length;
         rowNumber = map.length;
+        initNodes();
     }
 
+    /**
+     * 初始化节点
+     */
+    private void initNodes() {
+        nodes = new ArrayList<>();
+        int num = colNumber * rowNumber;
+        for(int i = 0;i < num;i++)
+            nodes.add(new TileNode(i,null));
+    }
+
+    /**
+     * 查找最优路径
+     * @param start  起点 id
+     * @param end    终点 id
+     * @return
+     */
     public ArrayList<Integer> search(int start, int end) {
         if (start < 0 || end > map[0].length * map.length - 1)
             return null;
         else if (map[getRowNumberById(end)][getColNumberById(end)] == 0)
             return null;
-        TileNode sTileNode = new TileNode(start, null);
-        TileNode eTileNode = new TileNode(end, null);
+        TileNode sTileNode = nodes.get(start);
+        TileNode eTileNode = nodes.get(end);
         openList.add(sTileNode);
         ArrayList<TileNode> resultList = search(sTileNode, eTileNode);
+        refreshTileNode();
         if (resultList.size() == 0)
             return null;
         else {
             ArrayList<Integer> target = new ArrayList<>();
+            target.remove(0); //去除掉开始节点
             for (TileNode i : resultList) {
                 target.add(i.getTileId());
             }
             return target;
         }
-
     }
 
-    //查找核心算法
+    /**
+     * 查找核心算法
+     * @param sTileNode
+     * @param eTileNode
+     * @return
+     */
     private ArrayList<TileNode> search(TileNode sTileNode, TileNode eTileNode) {
         ArrayList<TileNode> resultList = new ArrayList<>();
         boolean isFind = false;
@@ -120,10 +143,11 @@ public class AStar {
 
     //查询此路是否能走通
     private boolean checkPath(int id, TileNode parentTileNode, TileNode eTileNode, int cost) {
-        TileNode TileNode = new TileNode(id, parentTileNode);
+        TileNode tileNode = nodes.get(id);
+        tileNode.setParentNode(parentTileNode);
         //查找地图中是否能通过，暂时的判断条件是有水不能过
         if (map[getRowNumberById(id)][getColNumberById(id)] == 0) {
-            closeList.add(TileNode);
+            closeList.add(tileNode);
             return false;
         }
         //查找关闭列表中是否存在
@@ -135,17 +159,17 @@ public class AStar {
         if ((index = isListContains(openList, id)) != -1) {
             //G值是否更小，即是否更新G，F值
             if ((parentTileNode.getG() + cost) < openList.get(index).getG()) {
-                TileNode.setParentNode(parentTileNode);
-                countG(TileNode, eTileNode, cost);
-                countF(TileNode);
+                tileNode.setParentNode(parentTileNode);
+                countG(tileNode, eTileNode, cost);
+                countF(tileNode);
 
-                openList.set(index, TileNode);
+                openList.set(index, tileNode);
             }
         } else {
             //添加到开启列表中
-            TileNode.setParentNode(parentTileNode);
-            count(TileNode, eTileNode, cost);
-            openList.add(TileNode);
+            tileNode.setParentNode(parentTileNode);
+            count(tileNode, eTileNode, cost);
+            openList.add(tileNode);
         }
         return true;
     }
@@ -204,5 +228,16 @@ public class AStar {
     //获取节点是第几列
     public int getColNumberById(int id) {
         return id % colNumber;
+    }
+
+    /**
+     * 清除掉TileNode 的parentNode联系
+     */
+    private void refreshTileNode()
+    {
+        for (TileNode node:nodes) {
+            if(node.getParentNode()!=null)
+                node.setParentNode(null);
+        }
     }
 }

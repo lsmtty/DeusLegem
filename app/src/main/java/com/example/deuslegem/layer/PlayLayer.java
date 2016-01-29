@@ -106,7 +106,6 @@ public class PlayLayer extends  BaseLayer
             final ArrayList<Integer> path = findPath(standTile, targetTile);
             if(path!=null)
             {
-                path.remove(0);
                 if(path.size()!=0)
                 {
                     Log.i("startPoint",""+standTile);
