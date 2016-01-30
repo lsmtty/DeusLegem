@@ -17,5 +17,4 @@
         <activity android:name="org.wpsoft.dltel.SecondActivity">
         </activity>
     </application>
-
 </manifest>

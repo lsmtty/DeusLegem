@@ -44,6 +44,7 @@ public class AStar {
         TileNode eTileNode = new TileNode(end, null);
         openList.add(sTileNode);
         ArrayList<TileNode> resultList = search(sTileNode, eTileNode);
+        refreshList();
         if (resultList.size() == 0)
             return null;
         else {
@@ -54,6 +55,11 @@ public class AStar {
             return target;
         }
 
+    }
+
+    private void refreshList() {
+        openList.clear();
+        closeList.clear();
     }
 
     //查找核心算法
