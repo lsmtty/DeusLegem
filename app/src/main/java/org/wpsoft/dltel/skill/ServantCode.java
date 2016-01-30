@@ -1,5 +1,6 @@
 package org.wpsoft.dltel.skill;
 
+import android.support.annotation.Nullable;
 import org.wpsoft.dltel.deck.Servant;
 import org.wpsoft.dltel.executecode.SkillCode;
 import org.wpsoft.dltel.executecode.SkillCodeType;
@@ -11,19 +12,15 @@ import org.wpsoft.dltel.executecode.SkillCodeType;
 public abstract class ServantCode extends SkillCode {
     private Servant servant;
 
-<<<<<<< HEAD
     /**
      * 获取对应的从者
      *
      * @return 对应的从者
      */
-=======
->>>>>>> 1436d27ecf5a2c73b4f23606ee004b87cda16d57
     public Servant getServant() {
         return servant;
     }
 
-<<<<<<< HEAD
     /**
      * 按名称生成从者能力代码
      *
@@ -33,8 +30,7 @@ public abstract class ServantCode extends SkillCode {
      * @param servant        对应的从者
      * @return 读取到的能力代码
      */
-=======
->>>>>>> 1436d27ecf5a2c73b4f23606ee004b87cda16d57
+    @Nullable
     public static SkillCode loadServantCode(String name, SkillCodeType type, int spellTimePoint, Servant servant) {
         SkillCode skillCode = SkillCode.loadSkillCode(name, type, spellTimePoint);
         if (!(skillCode instanceof ServantCode)) return null;

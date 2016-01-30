@@ -2,10 +2,6 @@ package org.wpsoft.dltel.executecode;
 
 import android.support.annotation.Nullable;
 
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
-
 /**
  * 表示一段能力代码
  * Created by WinUP on 2016/1/20.
@@ -39,6 +35,16 @@ public abstract class SkillCode {
      * @return 执行结果
      */
     public abstract ExecuteParameter execute(ExecuteParameter parameter);
+
+    /**
+     * 确认能力代码是否被取消
+     * @param parameter 上个能力代码的执行结果
+     * @param type 当前能力代码的类型
+     * @return 能力代码是否被取消
+     */
+    public static boolean checkCanceled(ExecuteParameter parameter, SkillCodeType type) {
+        return (parameter.isCancelNext() && ((SkillCodeType) parameter.getExecuteResult()[0]).getValue() == type.getValue());
+    }
 
     /**
      * 按名称生成能力代码

@@ -31,14 +31,16 @@ public enum ExecuteTimePoint {
 
     /**
      * 获得能力代码发动时间对应的数值
+     *
      * @return 发动时间对应的数值
      */
-    public int getValue(){
+    public int getValue() {
         return this.value;
     }
 
     /**
      * 声明新的能力代码发动时间
+     *
      * @param i 发动时间对应的数值
      */
     ExecuteTimePoint(int i) {

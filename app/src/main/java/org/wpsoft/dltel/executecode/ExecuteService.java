@@ -103,5 +103,4 @@ public final class ExecuteService {
                 skillStack.push(skill);
         }
     }
-
 }
