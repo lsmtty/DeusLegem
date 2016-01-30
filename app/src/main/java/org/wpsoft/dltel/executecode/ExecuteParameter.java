@@ -32,7 +32,7 @@ public final class ExecuteParameter {
      *
      * @return 执行参数
      */
-    public Object[] getSpellResult() {
+    public Object[] getExecuteResult() {
         return spellResult;
     }
 

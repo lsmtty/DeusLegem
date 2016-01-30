@@ -44,9 +44,10 @@ public final class Servant extends CCSprite {
     }
 
     public Servant attack(Servant servant) {
-        servant.getDefinition().setLifePoint(-getDefinition().getAttackPoint(), true);
-        getDefinition().setLifePoint(servant.getDefinition().getAttackPoint() / 2, true);
-        if (getDefinition().getLifePoint() < 1) destroy();
+        servant.getDefinition().setLifePoint(-definition.getAttackPoint(), true);
+        definition.setLifePoint(servant.getDefinition().getAttackPoint() / 2, true);
+        if (servant.getDefinition().getLifePoint() < 1) servant.destroy();
+        if (definition.getLifePoint() < 1) destroy();
         return this;
     }
 
