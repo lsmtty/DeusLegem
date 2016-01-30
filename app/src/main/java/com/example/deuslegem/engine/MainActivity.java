@@ -3,6 +3,8 @@ package com.example.deuslegem.engine;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import com.example.deuslegem.layer.PlayLayer;
+import com.example.deuslegem.layer.SplashLayer;
+
 import org.cocos2d.layers.CCScene;
 import org.cocos2d.nodes.CCDirector;
 import org.cocos2d.opengl.CCGLSurfaceView;
@@ -22,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
         ccDirector.setScreenSize(512, 256);
         ccDirector.setDeviceOrientation(CCDirector.kCCDeviceOrientationLandscapeLeft);
         CCScene scene = CCScene.node();
-        PlayLayer playLayer = new PlayLayer();
-        scene.addChild(playLayer);
+        SplashLayer splashLayer = new SplashLayer();
+        scene.addChild(splashLayer);
         ccDirector.runWithScene(scene);
     }
 
