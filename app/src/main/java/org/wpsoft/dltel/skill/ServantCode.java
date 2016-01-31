@@ -1,6 +1,7 @@
 package org.wpsoft.dltel.skill;
 
 import android.support.annotation.Nullable;
+
 import org.wpsoft.dltel.deck.Servant;
 import org.wpsoft.dltel.executecode.SkillCode;
 import org.wpsoft.dltel.executecode.SkillCodeType;
@@ -11,7 +12,7 @@ import org.wpsoft.dltel.executecode.SkillCodeType;
  */
 public abstract class ServantCode extends SkillCode {
     private Servant servant;
-
+    
     /**
      * 获取对应的从者
      *
@@ -20,7 +21,7 @@ public abstract class ServantCode extends SkillCode {
     public Servant getServant() {
         return servant;
     }
-
+    
     /**
      * 按名称生成从者能力代码
      *
