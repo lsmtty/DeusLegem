@@ -1,11 +1,11 @@
-package com.example.deuslegem.bean;
+package org.wpsoft.dltel.gameboard;
 
 
 /**
- * 为寻路A*算法设计的节点辅助类
+ * 地图节点
  * Created by 思敏 on 2016/1/24.
  */
-public class TileNode implements Comparable<TileNode> {
+public final class TileNode implements Comparable<TileNode> {
     private int tileId;
     private TileNode parentNode;    //父节点
     private int g;  //g值
@@ -25,7 +25,7 @@ public class TileNode implements Comparable<TileNode> {
         return parentNode;
     }
 
-    public void setParentNode(TileNode parentNode) {
+    void setParentNode(TileNode parentNode) {
         this.parentNode = parentNode;
     }
 
@@ -33,7 +33,7 @@ public class TileNode implements Comparable<TileNode> {
         return g;
     }
 
-    public void setG(int g) {
+    void setG(int g) {
         this.g = g;
     }
 
@@ -41,7 +41,7 @@ public class TileNode implements Comparable<TileNode> {
         return h;
     }
 
-    public void setH(int h) {
+    void setH(int h) {
         this.h = h;
     }
 
@@ -49,7 +49,7 @@ public class TileNode implements Comparable<TileNode> {
         return f;
     }
 
-    public void setF(int f) {
+    void setF(int f) {
         this.f = f;
     }
 

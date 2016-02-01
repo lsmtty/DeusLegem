@@ -1,6 +1,7 @@
 package com.example.deuslegem.layer;
 
 import android.graphics.drawable.GradientDrawable;
+import android.os.Debug;
 
 import org.cocos2d.actions.instant.CCFlipY;
 import org.cocos2d.actions.tile.CCTurnOffTiles;
@@ -53,9 +54,10 @@ public class SplashLayer extends BaseLayer
             @Override
             public void run() {
                 CCScene ccScene = CCScene.node();
-                ccScene.addChild(new PlayLayer());
+                ccScene.addChild(new PlayLayer("TestMap.tmx"));
                 //时间这里以秒为单位，而不是毫秒
                 //transition = CCJumpZoomTransition.transition(2, ccScene); //跳跃进入和出现
+                //Debug.startMethodTracing();
                 transition = CCFadeTransition.transition(2,ccScene);  //渐隐效果 不错
                 //transition = CCRadialCWTransition.transition(2,ccScene);//扇形消失
                 //transition = CCFlipYTransition.transition(2,ccScene,0); //上下翻转   0或非0 最后为翻转方向
@@ -70,6 +72,7 @@ public class SplashLayer extends BaseLayer
                 // transition = CCShrinkGrowTransition.transition(2,ccScene);        //交错动画
                 //transition = CCPageTurnTransition.transition(5,ccScene,true);
                 CCDirector.sharedDirector().replaceScene(transition);
+                //Debug.stopMethodTracing();
             }
         }, 2000);
     }

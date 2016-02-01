@@ -3,7 +3,7 @@ package com.example.deuslegem.layer;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import com.example.deuslegem.utils.AStar;
+import org.wpsoft.dltel.gameboard.MapInfo;
 import com.example.deuslegem.utils.CommonUtils;
 
 import org.cocos2d.layers.CCTMXTiledMap;
@@ -32,15 +32,19 @@ public class PlayLayer extends BaseLayer {
     private ArrayList<Integer> mountainTile;
     private boolean actionFinsih = true;
     private int[][] modelMap;      //抽象地图 1land 2.mountain 3water，为寻路算法设计
-    private AStar star;             //A* 寻路算法类
+    private MapInfo star;             //A* 寻路算法类
 
-    public PlayLayer() {
+    public PlayLayer(String mapName) {
         setIsTouchEnabled(true);
-        init();
+        init(mapName);
     }
 
-    private void init() {
-        loadMap();
+    /**
+     * 初始化界面元素
+     * @param mapName
+     */
+    private void init(String mapName) {
+        loadMap(mapName);
         loadZombie();
     }
 
@@ -55,11 +59,12 @@ public class PlayLayer extends BaseLayer {
         this.addChild(zombie, 1);
     }
 
-    private void loadMap() {
+    private void loadMap(String mapName) {
         //getContentSize 获取地图像素为单位的宽和高
         //getMapSize 获取地图的宽和高上的图块数量****易混淆
         //getTileSize 获取图块以像素为单位的宽和高
-        map = CCTMXTiledMap.tiledMap("image/TestMap.tmx");
+        //map = CCTMXTiledMap.tiledMap("image/TestMap.tmx");
+        map = CCTMXTiledMap.tiledMap("image/"+mapName);
         map.setAnchorPoint(0.5f, 0.5f);
         CGSize size = map.getContentSize();
         map.setPosition(size.getWidth() / 2, size.getHeight() / 2);
@@ -91,7 +96,7 @@ public class PlayLayer extends BaseLayer {
                 temp++;
             }
         }
-        star = new AStar(modelMap, tileInRow, tileInCol);
+        star = new MapInfo(modelMap);
     }
 
     @Override

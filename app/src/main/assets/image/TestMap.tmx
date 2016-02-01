@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="16" height="8" tilewidth="32" tileheight="32">
+<mapModel version="1.0" orientation="orthogonal" width="16" height="8" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="1 (28)" tilewidth="32" tileheight="32" spacing="1" margin="1">
   <image source="1 (28).jpg" width="1024" height="615"/>
  </tileset>
@@ -16,7 +16,7 @@
    eJxjYEAF+kwQTC6gVD+tzCVWP0wdulpkcXxmEbKDkH56AwARzAPV
   </data>
  </layer>
- <objectgroup name="land" width="16" height="8">
+ <objectgroup name="Landscape" width="16" height="8">
   <object x="14" y="15"/>
   <object x="46" y="17"/>
   <object x="80" y="15"/>
@@ -105,7 +105,7 @@
   <object x="79" y="113"/>
   <object x="495" y="48"/>
  </objectgroup>
- <objectgroup name="mountain" width="16" height="8">
+ <objectgroup name="Mountain" width="16" height="8">
   <object x="15" y="111"/>
   <object x="14" y="146"/>
   <object x="47" y="144"/>
@@ -128,7 +128,7 @@
   <object x="463" y="14"/>
   <object x="464" y="48"/>
  </objectgroup>
- <objectgroup name="water" width="16" height="8">
+ <objectgroup name="Water" width="16" height="8">
   <object x="143" y="47"/>
   <object x="142" y="15"/>
   <object x="175" y="16"/>
@@ -150,4 +150,4 @@
   <object x="431" y="176"/>
   <object x="462" y="175"/>
  </objectgroup>
-</map>
+</mapModel>
