@@ -1,7 +1,7 @@
 package org.wpsoft.dltel.skill;
 
 import android.support.annotation.Nullable;
-import com.example.deuslegem.bean.TileNode;
+import org.wpsoft.dltel.gameboard.TileNode;
 import org.wpsoft.dltel.executecode.SkillCode;
 import org.wpsoft.dltel.executecode.SkillCodeType;
 

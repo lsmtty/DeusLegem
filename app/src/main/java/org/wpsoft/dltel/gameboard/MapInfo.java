@@ -1,44 +1,77 @@
-package com.example.deuslegem.utils;
+package org.wpsoft.dltel.gameboard;
 
-
-import com.example.deuslegem.bean.TileNode;
+import org.cocos2d.layers.CCTMXTiledMap;
+import org.cocos2d.types.CGSize;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
- * 寻路A*算法
- * 需要传入构造好的地形模拟图 用 0 1 2分别表示不同地形
+ * 地图信息类
  * Created by 思敏 on 2016/1/24.
  */
-public class AStar {
-    private int[][] map;//地图(0为water 1为land 2为山脉)
+public class MapInfo {
+    private int[][] mapModel;//地图(0为water 1为land 2为山脉)
+    private CCTMXTiledMap ccMap;
     private int rowNumber;      //地图行数
     private int colNumber;      //地图列数
     private List<TileNode> openList;//开启列表
     private List<TileNode> closeList;//关闭列表
-    private final int COST_Land = 10;//平地移动路径评分
-    private final int COST_Mountain = 10;//山地间移动
-    private final int COST_ClimbMountain = 30;//爬山的路径评分
-    private final int COST_DownMountain = 20; //下山的路径评分
-    private int row;//行
-    private int column;//列
+    private static final int COST_Land = 10;//平地移动路径评分
+    private static final int COST_Mountain = 10;//山地间移动路径评分
+    private static final int COST_ClimbMountain = 30;//爬山的路径评分
+    private static final int COST_DownMountain = 20; //下山的路径评分
 
-    public AStar(int[][] map, int row, int column) {
-        this.map = map;
-        this.row = row;
-        this.column = column;
+    public MapInfo(int[][] mapModel) {
+        this.mapModel = mapModel;
         openList = new ArrayList<>();
         closeList = new ArrayList<>();
-        colNumber = map[0].length;
-        rowNumber = map.length;
+        colNumber = mapModel[0].length;
+        rowNumber = mapModel.length;
+    }
+
+    public MapInfo(String mapPath) {
+        CCTMXTiledMap map = CCTMXTiledMap.tiledMap("map/" + mapPath);
+        ccMap = map;
+        String[] masks = new String[]{"Landscape", "Mountain", "Water"};
+        CGSize mapSize = map.getMapSize();
+        CGSize tileSize = map.getTileSize();
+        for (String mask : masks) {
+            for (HashMap<String, String> node : map.objectGroupNamed(mask).objects) {
+                int row = (int) ((Integer.parseInt(node.get("x")) + 0.5) / tileSize.getWidth());
+                int col = (int) mapSize.getHeight() - 1 - (int) ((Integer.parseInt(node.get("y")) + 0.5) / tileSize.getHeight());
+                if (mask.equals("Landscape"))
+                    mapModel[row][col] = 1;
+                else if (mask.equals("Mountain"))
+                    mapModel[row][col] = 2;
+                else if (mask.equals("Water"))
+                    mapModel[row][col] = 0;
+            }
+        }
+        openList = new ArrayList<>();
+        closeList = new ArrayList<>();
+        colNumber = mapModel[0].length;
+        rowNumber = mapModel.length;
+    }
+
+    public CCTMXTiledMap getCcMap() {
+        return ccMap;
+    }
+
+    public int getRowNumber() {
+        return rowNumber;
+    }
+
+    public int getColNumber() {
+        return colNumber;
     }
 
     public ArrayList<Integer> search(int start, int end) {
-        if (start < 0 || end > map[0].length * map.length - 1)
+        if (start < 0 || end > mapModel[0].length * mapModel.length - 1)
             return null;
-        else if (map[getRowNumberById(end)][getColNumberById(end)] == 0)
+        else if (mapModel[getRowNumberById(end)][getColNumberById(end)] == 0)
             return null;
         TileNode sTileNode = new TileNode(start, null);
         TileNode eTileNode = new TileNode(end, null);
@@ -111,13 +144,13 @@ public class AStar {
     }
 
     private int checkCost(int startId, int targetId) {
-        if (map[getRowNumberById(startId)][getColNumberById(startId)] == 1) {
-            if (map[getRowNumberById(targetId)][getColNumberById(targetId)] == 2)
+        if (mapModel[getRowNumberById(startId)][getColNumberById(startId)] == 1) {
+            if (mapModel[getRowNumberById(targetId)][getColNumberById(targetId)] == 2)
                 return COST_ClimbMountain;
             else
                 return COST_Land;
         } else {
-            if (map[getRowNumberById(targetId)][getColNumberById(targetId)] == 1)
+            if (mapModel[getRowNumberById(targetId)][getColNumberById(targetId)] == 1)
                 return COST_DownMountain;
             else
                 return COST_Mountain;
@@ -128,7 +161,7 @@ public class AStar {
     private boolean checkPath(int id, TileNode parentTileNode, TileNode eTileNode, int cost) {
         TileNode TileNode = new TileNode(id, parentTileNode);
         //查找地图中是否能通过，暂时的判断条件是有水不能过
-        if (map[getRowNumberById(id)][getColNumberById(id)] == 0) {
+        if (mapModel[getRowNumberById(id)][getColNumberById(id)] == 0) {
             closeList.add(TileNode);
             return false;
         }
