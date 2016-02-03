@@ -1,5 +1,6 @@
 package org.wpsoft.dltel.gameboard;
 
+import android.support.annotation.Nullable;
 import org.cocos2d.layers.CCTMXTiledMap;
 import org.cocos2d.types.CGSize;
 
@@ -98,6 +99,7 @@ public final class MapInfo {
      * @param mask  可行走的点的mask
      * @return 目标路径
      */
+    @Nullable
     public LinkedList<Integer> navigate(int start, int end, int mask) {
         if (start < 0 || end > mapModel[0].length * mapModel.length - 1)
             return null;
