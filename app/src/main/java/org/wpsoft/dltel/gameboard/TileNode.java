@@ -7,59 +7,59 @@ package org.wpsoft.dltel.gameboard;
  */
 public final class TileNode implements Comparable<TileNode> {
     private int tileId;
-    private TileNode parentNode;    //父节点
-    private int g;  //g值
-    private int h;  //h值
-    private int f;  //f值
+    private TileNode aStarPreviousNode;    //父节点
+    private int aStarG;  //g值
+    private int aStarH;  //h值
+    private int aStarF;  //f值
 
     public TileNode(int tileId, TileNode parentNode) {
         this.tileId = tileId;
-        this.parentNode = parentNode;
+        this.aStarPreviousNode = parentNode;
     }
 
     public int getTileId() {
         return tileId;
     }
 
-    public TileNode getParentNode() {
-        return parentNode;
+    public TileNode getAStarPreciousNode() {
+        return aStarPreviousNode;
     }
 
-    void setParentNode(TileNode parentNode) {
-        this.parentNode = parentNode;
+    void setAStarPreviousNode(TileNode aStarPreviousNode) {
+        this.aStarPreviousNode = aStarPreviousNode;
     }
 
-    public int getG() {
-        return g;
+    public int getAStarG() {
+        return aStarG;
     }
 
-    void setG(int g) {
-        this.g = g;
+    void setAStarG(int aStatG) {
+        this.aStarG = aStatG;
     }
 
-    public int getH() {
-        return h;
+    public int getAStarH() {
+        return aStarH;
     }
 
-    void setH(int h) {
-        this.h = h;
+    void setAStarH(int aStarH) {
+        this.aStarH = aStarH;
     }
 
-    public int getF() {
-        return f;
+    public int getAStarF() {
+        return aStarF;
     }
 
-    void setF(int f) {
-        this.f = f;
+    void setAStarF(int aStarF) {
+        this.aStarF = aStarF;
     }
 
     public String toString() {
-        return "(" + tileId + "," + f + ")";
+        return "(" + tileId + "," + aStarF + ")";
     }
 
     @Override
     public int compareTo(TileNode another) {
-        return this.getF() - another.getF();
+        return this.getAStarF() - another.getAStarF();
     }
 }
 

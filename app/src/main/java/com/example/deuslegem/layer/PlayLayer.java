@@ -3,6 +3,7 @@ package com.example.deuslegem.layer;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import android.view.animation.Interpolator;
 import org.wpsoft.dltel.gameboard.MapInfo;
 import com.example.deuslegem.utils.CommonUtils;
 
@@ -12,6 +13,7 @@ import org.cocos2d.types.CGPoint;
 import org.cocos2d.types.CGSize;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Created by 思敏 on 2016/1/16.
@@ -76,11 +78,11 @@ public class PlayLayer extends BaseLayer {
         tileNumber = tileInCol * tileInRow;
         /*CCTMXLayer landLayer = map.layerNamed("LandLayer");
         CCTMXLayer waterLayer = map.layerNamed("WaterLayer");*/
-        land = (ArrayList) CommonUtils.getMapPoints(map, "land");
+        land = (ArrayList) CommonUtils.getMapPoints(map, "Landscape");
         landTile = (ArrayList) CommonUtils.getTileId(map, land);
-        water = (ArrayList) CommonUtils.getMapPoints(map, "water");
+        water = (ArrayList) CommonUtils.getMapPoints(map, "Water");
         waterTile = (ArrayList) CommonUtils.getTileId(map, water);
-        mountain = (ArrayList) CommonUtils.getMapPoints(map, "mountain");
+        mountain = (ArrayList) CommonUtils.getMapPoints(map, "Mountain");
         mountainTile = (ArrayList) CommonUtils.getTileId(map, mountain);
         //初始化模型地图
         modelMap = new int[tileInRow][tileInCol];
@@ -88,11 +90,11 @@ public class PlayLayer extends BaseLayer {
         for (int i = 0; i < tileInRow; i++) {
             for (int j = 0; j < tileInCol; j++) {
                 if (landTile.contains(temp))             //land tile
-                    modelMap[i][j] = 1;
-                else if (mountainTile.contains(temp))    //mountain tile
                     modelMap[i][j] = 2;
+                else if (mountainTile.contains(temp))    //mountain tile
+                    modelMap[i][j] = 4;
                 else if (waterTile.contains(temp))       //water tile
-                    modelMap[i][j] = 0;
+                    modelMap[i][j] = 1;
                 temp++;
             }
         }
@@ -108,11 +110,10 @@ public class PlayLayer extends BaseLayer {
                 Log.i("event", "event is null");
             target = this.convertTouchToNodeSpace(event); //转换成Cocos2d的坐标显示
             int targetTile = CommonUtils.getTileId(map, target);
-            final ArrayList<Integer> path = star.search(standTile, targetTile);
+            final LinkedList<Integer> path = star.navigate(standTile, targetTile, 6);
             if (path != null) {
                 if (path.size() != 0) {
                     Log.i("startPoint", "" + standTile);
-                    path.remove(0);
                     new Thread(new Runnable() {
                         @Override
                         public void run() {

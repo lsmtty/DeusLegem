@@ -9,6 +9,7 @@ import java.util.UUID;
 public final class Player {
     private String name;
     private UUID id;
+    private UUID token;
 
     public Player(String name, UUID id) {
         this.name = name;
@@ -29,5 +30,14 @@ public final class Player {
      */
     public UUID getId() {
         return id;
+    }
+
+    public UUID getToken() {
+        return token;
+    }
+
+    public Player setToken(UUID token) {
+        this.token = token;
+        return this;
     }
 }

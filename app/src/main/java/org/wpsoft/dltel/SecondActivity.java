@@ -22,7 +22,7 @@ public class SecondActivity extends AppCompatActivity {
         ccDirector.setScreenSize(480, 320);
         ccDirector.setDeviceOrientation(CCDirector.kCCDeviceOrientationLandscapeLeft);
         CCScene ccScene = CCScene.node();
-        ccScene.addChild(new PlayLayer());
+        ccScene.addChild(new PlayLayer("TestMap.tmx"));
         ccDirector.runWithScene(ccScene);
     }
 
